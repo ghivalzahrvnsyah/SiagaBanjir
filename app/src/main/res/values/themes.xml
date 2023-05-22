@@ -14,4 +14,13 @@
         <!-- Customize your theme here. -->
         <item name="android:titleTextColor">@color/white</item>
     </style>
+
+    <style name="Theme.SiagaBanjir.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.SiagaBanjir.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.SiagaBanjir.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

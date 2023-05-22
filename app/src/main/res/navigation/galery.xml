@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/galery"
+    app:startDestination="@id/galleryFragment2">
+
+    <fragment
+        android:id="@+id/galleryFragment2"
+        android:name="com.org.proyektingkat2.siagabanjir.ui.gallery.GalleryFragment"
+        android:label="fragment_gallery"
+        tools:layout="@layout/fragment_gallery" >
+        <action
+            android:id="@+id/action_galleryFragment2_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
+        <action
+            android:id="@+id/action_galleryFragment2_to_slideshowFragment2"
+            app:destination="@id/slideshowFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/slideshowFragment2"
+        android:name="com.org.proyektingkat2.siagabanjir.ui.slideshow.SlideshowFragment"
+        android:label="fragment_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/homeFragment2"
+        android:name="com.org.proyektingkat2.siagabanjir.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+</navigation>
