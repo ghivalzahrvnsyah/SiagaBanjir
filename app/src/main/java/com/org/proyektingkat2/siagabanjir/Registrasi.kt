@@ -4,10 +4,12 @@ package com.org.proyektingkat2.siagabanjir
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.org.proyektingkat2.db.DatabaseHandler
 import com.org.proyektingkat2.model.User
+import com.org.proyektingkat2.siagabanjir.databinding.LoginActivityBinding
 import com.org.proyektingkat2.siagabanjir.databinding.RegisterActivityBinding
 
 
@@ -41,7 +43,9 @@ class Registrasi: AppCompatActivity() {
                 val user = User(0, email, namaLengkap, noTlp, alamat, password)
                 val userId = databaseHandler.addUser(user)
                 if (userId != -1L) {
-                    val intent = Intent(this, UserListActivity::class.java)
+                    val message = "Registrasi Berhasil, Silahkan login"
+                    val intent = Intent(this, Login::class.java)
+                    intent.putExtra("toast_message", message)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Registrasi gagal", Toast.LENGTH_SHORT).show()
@@ -51,6 +55,7 @@ class Registrasi: AppCompatActivity() {
 
             }
         }
+
 
     }
     private fun isValidEmail(email: String): Boolean {

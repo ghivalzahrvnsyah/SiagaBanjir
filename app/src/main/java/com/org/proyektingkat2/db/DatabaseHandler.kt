@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.org.proyektingkat2.model.User
+import com.org.proyektingkat2.session.SessionManager
 
 
 class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
@@ -102,6 +103,35 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
         cursor.close()
         return userList
+    }
+
+    //---SESSION
+    private lateinit var sessionManager: SessionManager
+
+    init {
+        sessionManager = SessionManager(context)
+    }
+
+    // Fungsi untuk memulai sesi
+    fun startSession(user: User) {
+        sessionManager.setLoggedIn(true)
+        sessionManager.setUserId(user.id)
+    }
+
+    // Fungsi untuk mengakhiri sesi
+    fun endSession() {
+        sessionManager.setLoggedIn(false)
+        sessionManager.setUserId(-1)
+    }
+
+    // Fungsi untuk memeriksa apakah pengguna sudah login atau belum
+    fun isLoggedIn(): Boolean {
+        return sessionManager.isLoggedIn()
+    }
+
+    // Fungsi untuk mendapatkan ID pengguna yang sedang login
+    fun getLoggedInUserId(): Int {
+        return sessionManager.getUserId()
     }
 
 }
