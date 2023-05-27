@@ -13,6 +13,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:titleTextColor">@color/white</item>
+
     </style>
 
     <style name="Theme.SiagaBanjir.NoActionBar">
@@ -23,4 +24,8 @@
     <style name="Theme.SiagaBanjir.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.SiagaBanjir.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="bg_laporButton">
+        <item name="android:background">#F36868</item>
+    </style>
 </resources>
