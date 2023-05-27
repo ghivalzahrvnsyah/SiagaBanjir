@@ -43,9 +43,9 @@ class Registrasi: AppCompatActivity() {
                 val user = User(0, email, namaLengkap, noTlp, alamat, password)
                 val userId = databaseHandler.addUser(user)
                 if (userId != -1L) {
-                    val message = "Registrasi Berhasil, Silahkan login"
+                   // val message = "Registrasi Berhasil, Silahkan login"
                     val intent = Intent(this, Login::class.java)
-                    intent.putExtra("toast_message", message)
+                    //intent.putExtra("toast_message", message)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Registrasi gagal", Toast.LENGTH_SHORT).show()
@@ -54,6 +54,10 @@ class Registrasi: AppCompatActivity() {
                 Toast.makeText(this, "Mohon lengkapi data dengan benar", Toast.LENGTH_SHORT).show()
 
             }
+        }
+        binding.doLogin.setOnClickListener{
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
         }
 
 
