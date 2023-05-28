@@ -1,179 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="-36dp"
-    tools:context=".Registrasi">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/buttonTp"
-        android:layout_width="111dp"
-        android:layout_height="154dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_siaga_banjir" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailHint"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonTp"
-        >
+        tools:context=".Registrasi">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailInput"
+        <ImageView
+            android:id="@+id/buttonTp"
+            android:layout_width="102dp"
+            android:layout_height="118dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo_siaga_banjir" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailHint"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:hint="Email"
-            tools:layout_editor_absoluteX="17dp"
-            tools:layout_editor_absoluteY="188dp"
-            android:imeOptions="actionDone|actionNext"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonTp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/namaLengkapHint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailHint">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailInput"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="Email"
+                android:imeOptions="actionDone|actionNext"
+                tools:layout_editor_absoluteX="17dp"
+                tools:layout_editor_absoluteY="188dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/namaLengkapInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/namaLengkapHint"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:hint="Nama Lengkap"
-            tools:layout_editor_absoluteX="17dp"
-            tools:layout_editor_absoluteY="252dp"
-           />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailHint">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/noTelpHint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/namaLengkapHint"
-       >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/namaLengkapInput"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="Nama Lengkap"
+                tools:layout_editor_absoluteX="17dp"
+                tools:layout_editor_absoluteY="252dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/noTelpInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/noTelpHint"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:hint="Nomor Telepon"
-            android:inputType="number"
-            tools:layout_editor_absoluteX="17dp"
-            tools:layout_editor_absoluteY="315dp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/namaLengkapHint">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/alamatHint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noTelpHint">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/noTelpInput"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="Nomor Telepon"
+                android:inputType="number"
+                tools:layout_editor_absoluteX="17dp"
+                tools:layout_editor_absoluteY="315dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/alamatInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/alamatHint"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:hint="Alamat Lengkap"
-            tools:layout_editor_absoluteX="17dp"
-            tools:layout_editor_absoluteY="379dp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noTelpHint">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordHint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alamatHint"
-        tools:ignore="UnknownId">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/alamatInput"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="Alamat Lengkap"
+                tools:layout_editor_absoluteX="17dp"
+                tools:layout_editor_absoluteY="379dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordHint"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="17dp"
-            tools:layout_editor_absoluteY="442dp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alamatHint"
+            tools:ignore="UnknownId">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/konfirmPasswordHint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordHint"
-        tools:ignore="UnknownId">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordInput"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                tools:layout_editor_absoluteX="17dp"
+                tools:layout_editor_absoluteY="442dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/konfirmPasswordInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/konfirmPasswordHint"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:hint="Konfirmasi Password"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="17dp"
-            tools:layout_editor_absoluteY="506dp"
-           />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordHint"
+            tools:ignore="UnknownId">
 
-    <Button
-        android:id="@+id/registrasi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:text="REGISTER"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/doLogin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/konfirmPasswordHint"
-        app:layout_constraintVertical_bias="1.0" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/konfirmPasswordInput"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="Konfirmasi Password"
+                android:inputType="textPassword"
+                tools:layout_editor_absoluteX="17dp"
+                tools:layout_editor_absoluteY="506dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/doLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="108dp"
-        android:layout_marginBottom="80dp"
-        android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <Button
+            android:id="@+id/registrasi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="56dp"
+            android:text="@string/register_button"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doLogin"
+            app:layout_constraintVertical_bias="0.538" />
+
+        <Button
+            android:id="@+id/doLogin"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="94dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="124dp"
+            android:paddingLeft="2dp"
+            android:paddingTop="2dp"
+            android:paddingRight="2dp"
+            android:text="@string/login_disini"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/konfirmPasswordHint" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="126dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/sudah_ada_akun"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/konfirmPasswordHint"
+            app:layout_constraintTop_toBottomOf="@+id/konfirmPasswordHint" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

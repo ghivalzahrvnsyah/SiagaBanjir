@@ -9,18 +9,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.org.proyektingkat2.db.DatabaseHandler
 import com.org.proyektingkat2.model.User
-import com.org.proyektingkat2.siagabanjir.databinding.LoginActivityBinding
 import com.org.proyektingkat2.siagabanjir.databinding.RegisterActivityBinding
 
 
-class Registrasi: AppCompatActivity() {
+class Registrasi : AppCompatActivity() {
     private lateinit var binding: RegisterActivityBinding
     private lateinit var databaseHandler: DatabaseHandler
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= RegisterActivityBinding.inflate(layoutInflater)
+        binding = RegisterActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
@@ -43,9 +42,9 @@ class Registrasi: AppCompatActivity() {
                 val user = User(0, email, namaLengkap, noTlp, alamat, password)
                 val userId = databaseHandler.addUser(user)
                 if (userId != -1L) {
-                   // val message = "Registrasi Berhasil, Silahkan login"
+                    val message = "Registrasi Berhasil, Silahkan login"
                     val intent = Intent(this, Login::class.java)
-                    //intent.putExtra("toast_message", message)
+                    intent.putExtra("toast_message", message)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Registrasi gagal", Toast.LENGTH_SHORT).show()
@@ -55,30 +54,44 @@ class Registrasi: AppCompatActivity() {
 
             }
         }
-        binding.doLogin.setOnClickListener{
+        binding.doLogin.setOnClickListener {
+            val message = "Silahkan Login"
             val intent = Intent(this, Login::class.java)
+            intent.putExtra("toast_message", message)
             startActivity(intent)
         }
 
 
     }
+
     private fun isValidEmail(email: String): Boolean {
         return if (email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            true
+            val existingUser = databaseHandler.getUser(email)
+            if (existingUser != null) {
+                binding.emailInput.error = "Email sudah terdaftar"
+                false
+            } else {
+                true
+            }
         } else {
             binding.emailInput.error = "Masukkan email dengan format yang benar"
             false
         }
     }
 
+
     private fun isValidNamaLengkap(namaLengkap: String): Boolean {
-        return if (namaLengkap.isNotEmpty() && !namaLengkap.matches(Regex(".*\\d.*")) && !namaLengkap.matches(Regex(".*[^\\p{L}\\s].*"))) {
+        return if (namaLengkap.isNotEmpty() && !namaLengkap.matches(Regex(".*\\d.*")) && !namaLengkap.matches(
+                Regex(".*[^\\p{L}\\s].*")
+            )
+        ) {
             true
         } else {
             binding.namaLengkapInput.error = "Nama lengkap tidak valid"
             false
         }
     }
+
     private fun isValidAlamat(alamat: String): Boolean {
         return if (alamat.isNotEmpty()) {
             true
@@ -96,7 +109,6 @@ class Registrasi: AppCompatActivity() {
             false
         }
     }
-
 
 
     private fun isValidPassword(password: String, konfirmPassword: String): Boolean {

@@ -9,7 +9,8 @@ import com.org.proyektingkat2.model.User
 import com.org.proyektingkat2.siagabanjir.R
 
 
-class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
+class DatabaseHandler(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_VERSION = 3
@@ -24,7 +25,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        val createUsersTable = "CREATE TABLE $TABLE_USERS ($KEY_ID INTEGER PRIMARY KEY,$KEY_EMAIL TEXT , $KEY_NAMA_LENGKAP TEXT, $KEY_NO_TLP TEXT, $KEY_ALAMAT TEXT,$KEY_PASSWORD TEXT)"
+        val createUsersTable =
+            "CREATE TABLE $TABLE_USERS ($KEY_ID INTEGER PRIMARY KEY,$KEY_EMAIL TEXT , $KEY_NAMA_LENGKAP TEXT, $KEY_NO_TLP TEXT, $KEY_ALAMAT TEXT,$KEY_PASSWORD TEXT)"
         db.execSQL(createUsersTable)
     }
 
@@ -43,8 +45,6 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         values.put(KEY_PASSWORD, user.password)
         return db.insert(TABLE_USERS, null, values)
     }
-
-
 
 
     fun getUser(email: String): User? {

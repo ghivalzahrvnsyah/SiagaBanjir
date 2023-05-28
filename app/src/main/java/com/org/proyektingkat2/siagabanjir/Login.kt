@@ -9,26 +9,25 @@ import com.org.proyektingkat2.session.SessionManager
 import com.org.proyektingkat2.siagabanjir.databinding.LoginActivityBinding
 
 
-
-class Login: AppCompatActivity() {
+class Login : AppCompatActivity() {
     private lateinit var binding: LoginActivityBinding
     private lateinit var databaseHandler: DatabaseHandler
     private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= LoginActivityBinding.inflate(layoutInflater)
+        binding = LoginActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-         databaseHandler = DatabaseHandler(this)
+        databaseHandler = DatabaseHandler(this)
 
         sessionManager = SessionManager(this)
 
-//        val intent = intent
-//        val message = intent.getStringExtra("toast_message")
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        val intent = intent
+        val message = intent.getStringExtra("toast_message")
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
 
-        binding.login.setOnClickListener{
+        binding.login.setOnClickListener {
             val email = binding.emailInput.text.toString()
             val password = binding.passwordInput.text.toString()
 
@@ -43,7 +42,10 @@ class Login: AppCompatActivity() {
                 Toast.makeText(this, "Username atau password salah", Toast.LENGTH_SHORT).show()
             }
         }
-
+        binding.doRegistrasi.setOnClickListener {
+            val intent = Intent(this, Registrasi::class.java)
+            startActivity(intent)
+        }
 
 
     }

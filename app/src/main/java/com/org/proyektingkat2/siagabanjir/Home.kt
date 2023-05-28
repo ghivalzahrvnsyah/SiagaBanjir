@@ -25,6 +25,7 @@ class Home: AppCompatActivity() {
             binding.nama.text = getUser.namaLengkap
             binding.email.text = getUser.email
             binding.notlp.text =getUser.noTelepon
+            binding.alamat.text =getUser.alamat
         }
 
     }
