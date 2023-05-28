@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:id="@+id/group_main" android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_main"
+        android:checkableBehavior="none">
         <item
             android:id="@+id/menu_account_settings"
-
+            android:icon="@drawable/account"
             android:title="Pengaturan Akun" />
         <item
             android:id="@+id/menu_password_settings"
-
+            android:icon="@drawable/password"
             android:title="Pengaturan Password" />
+
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/tentang"
+            android:title="Tentang" />
     </group>
 
-    <item
-        android:id="@+id/menu_logout"
-
-        android:title="Logout" />
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/menu_logout"
+            android:icon="@drawable/logout"
+            android:title="Logout" />
+    </group>
 </menu>

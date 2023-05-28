@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:background="#000000"
+    android:background="@color/blue_bg2"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
@@ -14,19 +14,23 @@
         android:contentDescription="Profile Image" />
 
     <TextView
+        android:id="@+id/namaLengkap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="John Doe"
+        android:textAllCaps="true"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:layout_marginTop="8dp" />
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="john.doe@example.com"
         android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:textSize="14sp" />
 
 </LinearLayout>

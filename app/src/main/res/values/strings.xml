@@ -22,4 +22,8 @@
     <string name="login_button">login</string>
     <string name="register_button">buat akun</string>
     <string name="siaga_banjir">SIAGA BANJIR RW. 10</string>
+    <string name="pengaturan_akun"> Pengaturan Akun</string>
+    <string name="pengaturan_password"> Pengaturan Password</string>
+    <string name="do_update">Update informasi akun anda ?</string>
+    <string name="do_update_password">Update password anda ?</string>
 </resources>
