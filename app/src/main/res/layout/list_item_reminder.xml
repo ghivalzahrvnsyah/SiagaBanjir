@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    app:contentPadding="12dp">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:gravity="center">
+
+       <androidx.appcompat.widget.AppCompatImageView
+           android:id="@+id/imageView"
+           android:layout_width="64dp"
+           android:layout_height="64dp"
+           android:layout_marginStart="18dp"
+           android:layout_marginTop="18dp"
+           android:layout_marginEnd="18dp"
+           android:layout_marginBottom="18dp"
+           tools:srcCompat="@drawable/ic_profile"
+           android:layout_centerVertical="true"
+           />
+
+       <TextView
+           android:id="@+id/tvActivity"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="18dp"
+           android:layout_marginBottom="8dp"
+           android:layout_toEndOf="@+id/imageView"
+           tools:text="Kerja Bakti"
+           android:textStyle="bold"
+           android:textSize="21sp"/>
+       <TextView
+           android:id="@+id/tvAction"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/tvActivity"
+           android:layout_marginBottom="8dp"
+           android:layout_toEndOf="@+id/imageView"
+           tools:text="Pengerukan Selokan Wilayah RT. 02"
+           android:textSize="18sp"/>
+       <TextView
+           android:id="@+id/tvName"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/tvAction"
+           android:layout_marginBottom="8dp"
+           android:layout_toEndOf="@+id/imageView"
+           tools:text="Oleh : Ketua RT 04"
+           android:textSize="18sp"/>
+   </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

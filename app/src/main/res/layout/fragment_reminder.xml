@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HistoryFragment">
+    tools:context=".ReminderFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvHistory"
+        android:id="@+id/rvReminder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:layout_marginStart="8dp"
-        tools:listitem="@layout/list_item_history"/>
+        tools:listitem="@layout/list_item_reminder"/>
 </LinearLayout>
