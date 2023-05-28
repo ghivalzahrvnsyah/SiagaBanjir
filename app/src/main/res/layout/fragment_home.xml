@@ -79,7 +79,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_cuaca"
+        android:backgroundTint="@color/blue_bg2"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
         app:contentPadding="10dp">
@@ -276,14 +276,16 @@
     </GridLayout>
 
     <Button
-       android:id="@+id/btn_lapor"
-        app:icon="@drawable/ic_lapor"
+        android:id="@+id/btn_lapor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Laporkan Banjir"
+        app:icon="@drawable/ic_lapor"
+        android:layout_gravity="center"
         android:layout_margin="8dp"
-       android:backgroundTint="@color/button_lapor"
-        android:layout_gravity="center"/>
+        android:backgroundTint="@color/button_lapor"
+        android:text="Laporkan Banjir"
+        android:textSize="12sp"
+        />
 
 
 </LinearLayout>
