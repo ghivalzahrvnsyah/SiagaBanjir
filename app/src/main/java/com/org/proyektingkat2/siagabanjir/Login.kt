@@ -33,7 +33,7 @@ class Login : AppCompatActivity() {
 
             val user = databaseHandler.getUser(email)
             if (user != null && user.password == password) {
-                sessionManager.createLoginSession(user.email)
+                //sessionManager.createLoginSession(user.email)
                 val intent = Intent(this, Home::class.java)
                 startActivity(intent)
                 //Toast.makeText(this, "LOGIN BERHASIL", Toast.LENGTH_SHORT).show()

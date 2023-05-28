@@ -2,9 +2,9 @@ package com.org.proyektingkat2.model
 
 data class User(
     val id: Int,
-    val email: String,
-    val namaLengkap: String,
-    val noTelepon: String,
-    val alamat: String,
-    val password: String,
+    var email: String,
+    var namaLengkap: String,
+    var noTelepon: String,
+    var alamat: String,
+    var password: String,
 )

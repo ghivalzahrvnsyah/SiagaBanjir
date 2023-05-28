@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.org.proyektingkat2.model.User
-import com.org.proyektingkat2.siagabanjir.R
 
 
 class DatabaseHandler(context: Context) :
@@ -72,10 +71,17 @@ class DatabaseHandler(context: Context) :
         values.put(KEY_NAMA_LENGKAP, user.namaLengkap)
         values.put(KEY_NO_TLP, user.noTelepon)
         values.put(KEY_ALAMAT, user.alamat)
-        values.put(KEY_PASSWORD, user.password)
 
         return db.update(TABLE_USERS, values, "$KEY_ID = ?", arrayOf(user.id.toString()))
     }
+
+    fun updatePassword(email: String, newPassword: String): Int {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(KEY_PASSWORD, newPassword)
+        return db.update(TABLE_USERS, values, "$KEY_EMAIL = ?", arrayOf(email))
+    }
+
 
     fun deleteUser(user: User): Int {
         val db = this.writableDatabase
