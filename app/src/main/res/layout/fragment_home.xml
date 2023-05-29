@@ -275,7 +275,7 @@
         </androidx.cardview.widget.CardView>
     </GridLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_lapor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -284,8 +284,8 @@
         android:layout_margin="8dp"
         android:backgroundTint="@color/button_lapor"
         android:text="Laporkan Banjir"
-        android:textSize="12sp"
-        />
+        android:textSize="12sp">
+    </com.google.android.material.button.MaterialButton>
 
 
 </LinearLayout>
