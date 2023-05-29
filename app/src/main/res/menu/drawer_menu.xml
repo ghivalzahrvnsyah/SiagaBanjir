@@ -4,24 +4,42 @@
         android:id="@+id/group_main"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/menu_account_settings"
-            android:icon="@drawable/account"
-            android:title="Pengaturan Akun" />
+            android:id="@+id/home"
+            android:icon="@drawable/home"
+            android:title="Beranda" />
         <item
-            android:id="@+id/menu_password_settings"
-            android:icon="@drawable/password"
-            android:title="Pengaturan Password" />
+            android:id="@+id/histori"
+            android:icon="@drawable/history"
+            android:title="History" />
+        <item
+            android:id="@+id/notifikasi"
+            android:icon="@drawable/notif"
+            android:title="Notifikasi" />
 
         <item
             android:id="@+id/about"
             android:icon="@drawable/tentang"
             android:title="Tentang" />
     </group>
+    <item android:title="Pengaturan Akun">
+        <menu>
+            <item
+                android:id="@+id/menu_account_settings"
+                android:icon="@drawable/account"
+                android:title="Pengaturan Akun" />
+            <item
+                android:id="@+id/menu_password_settings"
+                android:icon="@drawable/password"
+                android:title="Pengaturan Password" />
 
-    <group android:checkableBehavior="none">
-        <item
-            android:id="@+id/menu_logout"
-            android:icon="@drawable/logout"
-            android:title="Logout" />
-    </group>
+            <item
+                android:id="@+id/menu_logout"
+                android:icon="@drawable/logout"
+                android:title="Logout" />
+        </menu>
+
+    </item>
+
+
+
 </menu>

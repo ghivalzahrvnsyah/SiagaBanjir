@@ -9,12 +9,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.org.proyektingkat2.db.DatabaseHandler
 import com.org.proyektingkat2.model.User
+import com.org.proyektingkat2.session.SessionManager
 import com.org.proyektingkat2.siagabanjir.databinding.RegisterActivityBinding
 
 
 class Registrasi : AppCompatActivity() {
     private lateinit var binding: RegisterActivityBinding
     private lateinit var databaseHandler: DatabaseHandler
+    private lateinit var sessionManager: SessionManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +24,16 @@ class Registrasi : AppCompatActivity() {
         binding = RegisterActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         databaseHandler = DatabaseHandler(this)
+        sessionManager = SessionManager(this)
+
+        if (sessionManager.isLoggedIn()) {
+            val intent = Intent(this, Home::class.java)
+            startActivity(intent)
+            finish() // Menutup Activity Login agar tidak dapat diakses lagi
+        }
+
+
         binding.registrasi.setOnClickListener {
             val email = binding.emailInput.text.toString()
             val namaLengkap = binding.namaLengkapInput.text.toString()
@@ -110,15 +119,22 @@ class Registrasi : AppCompatActivity() {
         }
     }
 
-
     private fun isValidPassword(password: String, konfirmPassword: String): Boolean {
         return if (password.isNotEmpty() && password.length >= 6 && password == konfirmPassword) {
             true
+        } else if (!password.isNotEmpty()) {
+            binding.passwordInput.error =
+                "Masukkan password dengan panjang minimal 6 karakter"
+            false
+        } else if (password.length < 6) {
+            binding.passwordInput.error =
+                "Password minimal 6 karakter"
+            false
         } else {
-            binding.passwordInput.error = "Masukkan password dengan panjang minimal 6 karakter"
-            binding.konfirmPasswordInput.error = "Konfirmasi password tidak cocok"
+            binding.konfirmPasswordInput.error = "Konfirmasi password salah"
             false
         }
+
     }
 
 }

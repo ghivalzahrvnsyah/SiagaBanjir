@@ -20,7 +20,11 @@ class EditAkunFragment : Fragment() {
     private lateinit var dbHandler: DatabaseHandler
     private lateinit var sessionManager: SessionManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = FragmentEditAkunBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,6 +46,7 @@ class EditAkunFragment : Fragment() {
         }
 
     }
+
     private fun updateUser() {
         val updateEmail = binding.editTextEmail.text.toString()
         val updatedNamaLengkap = binding.editTextNamaLengkap.text.toString()
@@ -79,6 +84,7 @@ class EditAkunFragment : Fragment() {
             dialogBuilder.show()
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

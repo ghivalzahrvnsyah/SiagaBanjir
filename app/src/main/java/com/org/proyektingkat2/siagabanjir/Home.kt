@@ -1,11 +1,13 @@
 package com.org.proyektingkat2.siagabanjir
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.org.proyektingkat2.db.DatabaseHandler
 import com.org.proyektingkat2.session.SessionManager
@@ -24,6 +26,13 @@ class Home : AppCompatActivity() {
         setContentView(binding.root)
         sessionManager = SessionManager(this)
         databaseHandler = DatabaseHandler(this)
+
+        if(!sessionManager.isLoggedIn()){
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         drawerLayout = binding.drawerLayout
 
         navigationView = binding.navigationView
@@ -77,6 +86,24 @@ class Home : AppCompatActivity() {
         }
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.home -> {
+                    val fragment = HomeFragment()
+                    replaceFragment(fragment)
+                    drawerLayout.closeDrawers()
+                    true
+                }
+                R.id.histori -> {
+                    val fragment = HistoryFragment()
+                    replaceFragment(fragment)
+                    drawerLayout.closeDrawers()
+                    true
+                }
+                R.id.notifikasi -> {
+                    val fragment = NotifikasiFragment()
+                    replaceFragment(fragment)
+                    drawerLayout.closeDrawers()
+                    true
+                }
                 R.id.menu_account_settings -> {
                     val fragment = EditAkunFragment()
                     replaceFragment(fragment)
@@ -87,6 +114,26 @@ class Home : AppCompatActivity() {
                     val fragment = EditPasswordFragment()
                     replaceFragment(fragment)
                     drawerLayout.closeDrawers()
+                    true
+                }
+                R.id.menu_logout -> {
+                    sessionManager.logout()
+                    val dialogBuilder = MaterialAlertDialogBuilder(this)
+                        .setTitle("Keluar aplikasi!")
+                        .setMessage("Anda akan keluar aplikasi?")
+                        .setPositiveButton("OK") { _, _ ->
+                            // Tambahkan pemanggilan recreate() di dalam tindakan positif tombol OK
+                            recreate()
+                            val message = "Anda telah keluar"
+                            val intent = Intent(this, Login::class.java)
+                            intent.putExtra("toast_message", message)
+                            startActivity(intent)
+                        }
+                        .setNegativeButton("No") { _, _ ->
+                            // Tindakan yang ingin Anda lakukan ketika pengguna memilih tombol "No"
+                            // Misalnya, Anda dapat menutup dialog atau mengabaikan tindakan ini
+                        }
+                    dialogBuilder.show()
                     true
                 }
                 else -> false

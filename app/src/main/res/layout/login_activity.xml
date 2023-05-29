@@ -95,6 +95,7 @@
             android:paddingRight="2dp"
             android:text="@string/doRegistrasi"
             android:textAllCaps="false"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

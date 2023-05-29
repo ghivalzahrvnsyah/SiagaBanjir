@@ -82,7 +82,6 @@ class DatabaseHandler(context: Context) :
         return db.update(TABLE_USERS, values, "$KEY_EMAIL = ?", arrayOf(email))
     }
 
-
     fun deleteUser(user: User): Int {
         val db = this.writableDatabase
         return db.delete(TABLE_USERS, "$KEY_ID = ?", arrayOf(user.id.toString()))
