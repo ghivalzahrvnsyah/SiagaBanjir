@@ -26,4 +26,10 @@
     <string name="pengaturan_password"> Pengaturan Password</string>
     <string name="do_update">Update informasi akun anda ?</string>
     <string name="do_update_password">Update password anda ?</string>
+    <string name="selamat_datang">Selamat datang</string>
+    <string name="name">Lorem Ipsum Dolor</string>
+    <string name="atmosfer">Cerah Berawan</string>
+    <string name="suhu">30°</string>
+
+
 </resources>
