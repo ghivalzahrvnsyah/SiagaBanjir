@@ -2,6 +2,7 @@ package com.org.proyektingkat2.siagabanjir
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -143,6 +144,8 @@ class Home : AppCompatActivity() {
         // Set default fragment
         val defaultFragment = HomeFragment()
         replaceFragment(defaultFragment)
+
+
     }
 
     private fun replaceFragment(fragment: Fragment) {

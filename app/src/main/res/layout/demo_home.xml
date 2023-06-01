@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/greeting"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dump_name"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -31,13 +30,14 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="351dp"
-        android:layout_height="178dp"
+        android:layout_width="365dp"
+        android:layout_height="167dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/user_name"
         app:layout_constraintTop_toBottomOf="@+id/textView14"
         app:srcCompat="@drawable/bg_2" />
 
@@ -45,9 +45,9 @@
         android:id="@+id/imageView4"
         android:layout_width="25dp"
         android:layout_height="25dp"
-
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/statusBanjir"
+        app:layout_constraintHorizontal_bias="0.769"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
         app:srcCompat="@drawable/circle_status_1" />
@@ -56,14 +56,11 @@
         android:id="@+id/statusBanjir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="132dp"
         android:text="@string/income_banjir"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <GridLayout
@@ -81,7 +78,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView15">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/menu_laporan_warga"
             android:layout_width="wrap_content"
             android:layout_height="105dp"
             android:layout_row="0"
@@ -91,7 +87,6 @@
             android:layout_gravity="fill"
             android:layout_margin="8sp"
             android:backgroundTint="@color/blue_bg2"
-            android:clickable="true"
             app:cardCornerRadius="10dp">
 
             <LinearLayout
@@ -128,8 +123,8 @@
             android:layout_gravity="fill"
             android:layout_margin="8sp"
             android:backgroundTint="@color/blue_bg2"
-            android:clickable="true"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="10dp"
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -141,13 +136,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/menu_sos" />
+                    android:src="@drawable/menu_notif" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2sp"
-                    android:text="Nomor Darurat"
+                    android:text="Laporan Warga"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -165,8 +160,8 @@
             android:layout_gravity="fill"
             android:layout_margin="8sp"
             android:backgroundTint="@color/blue_bg2"
-            android:clickable="true"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="10dp"
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -178,13 +173,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/menu_map" />
+                    android:src="@drawable/menu_notif" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2sp"
-                    android:text="Info Wilayah"
+                    android:text="Laporan Warga"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -203,8 +198,8 @@
             android:layout_gravity="fill"
             android:layout_margin="8sp"
             android:backgroundTint="@color/blue_bg2"
-            android:clickable="true"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="10dp"
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -216,13 +211,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/menu_mitigation" />
+                    android:src="@drawable/menu_notif" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2sp"
-                    android:text="Mitigasi Banjir"
+                    android:text="Laporan Warga"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -237,9 +232,8 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="10dp"
         android:text="@string/info_banjir"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -252,15 +246,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/menu_lain"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView14"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_lapor"
+    <Button
+        android:id="@+id/button"
         android:layout_width="215dp"
         android:layout_height="54dp"
         android:backgroundTint="@color/button_lapor"
@@ -269,7 +262,6 @@
         android:paddingBottom="6dp"
         android:text="@string/report"
         android:textStyle="bold"
-        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
