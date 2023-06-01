@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "261821630468",
+    "project_id": "siaga-banjir-6b3e7",
+    "storage_bucket": "siaga-banjir-6b3e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261821630468:android:8a00f8874f2f789a01cd51",
+        "android_client_info": {
+          "package_name": "com.cloverteam.siagabanjir"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7e_gTVCfaeEHVbs_6I-MdoKI6gGpaI_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

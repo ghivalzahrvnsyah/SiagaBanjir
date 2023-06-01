@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,7 @@
         android:theme="@style/Theme.SiagaBanjir"
         tools:targetApi="31">
         <activity
-            android:name=".Login"
+            android:name=".viewmodel.Login"
             android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
@@ -26,10 +27,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".UserListActivity"/>
-        <activity android:name=".Registrasi"/>
-        <activity android:name=".Home"/>
-        <activity android:name=".Profile"/>
+        <activity android:name=".viewmodel.Registrasi"/>
+        <activity android:name=".viewmodel.Home"/>
+        <activity android:name=".viewmodel.Profile"/>
 
         <meta-data
             android:name="preloaded_fonts"
