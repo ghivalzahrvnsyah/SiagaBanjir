@@ -54,10 +54,15 @@ class HomeFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        binding.menuWilayahBanjir.setOnClickListener {
+            val wilayahFragment = AreaBanjirFragment()
+            val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
+            transaction.replace(R.id.fragmentContainer, wilayahFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
         val latestReports = databaseHandler.getLatestReportsWithStatus3()
-        val info_for = R.string.info_banjir
         for (report in latestReports) {
-            //binding.statusBanjir.setText(info_for, " ${report.area}")
             binding.statusBanjir.text = "Banjir sedang berlangsung di ${report.area}"
         }
 

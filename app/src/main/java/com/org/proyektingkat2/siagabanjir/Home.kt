@@ -73,11 +73,11 @@ class Home : AppCompatActivity() {
                     replaceFragment(fragment)
                     true
                 }
-                R.id.notifikasi -> {
-                    val fragment = NotifikasiFragment()
-                    replaceFragment(fragment)
-                    true
-                }
+//                R.id.notifikasi -> {
+//                    val fragment = NotifikasiFragment()
+//                    replaceFragment(fragment)
+//                    true
+//                }
                 R.id.account -> {
                     drawerLayout.openDrawer(navigationView)
                     true
@@ -99,12 +99,12 @@ class Home : AppCompatActivity() {
                     drawerLayout.closeDrawers()
                     true
                 }
-                R.id.notifikasi -> {
-                    val fragment = NotifikasiFragment()
-                    replaceFragment(fragment)
-                    drawerLayout.closeDrawers()
-                    true
-                }
+//                R.id.notifikasi -> {
+//                    val fragment = NotifikasiFragment()
+//                    replaceFragment(fragment)
+//                    drawerLayout.closeDrawers()
+//                    true
+//                }
                 R.id.menu_account_settings -> {
                     val fragment = EditAkunFragment()
                     replaceFragment(fragment)

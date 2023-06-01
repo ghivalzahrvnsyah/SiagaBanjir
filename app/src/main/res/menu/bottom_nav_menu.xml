@@ -10,10 +10,10 @@
         android:id="@+id/history"
         android:icon="@drawable/history"
         android:title="History" />
-    <item
-        android:id="@+id/notifikasi"
-        android:icon="@drawable/notifications"
-        android:title="Notifikasi" />
+<!--    <item-->
+<!--        android:id="@+id/notifikasi"-->
+<!--        android:icon="@drawable/notifications"-->
+<!--        android:title="Notifikasi" />-->
     <item
         android:id="@+id/account"
         android:icon="@drawable/account"
