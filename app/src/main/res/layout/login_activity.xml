@@ -13,22 +13,22 @@
 
         <ImageView
             android:id="@+id/buttonTp"
-            android:layout_width="133dp"
-            android:layout_height="96dp"
+            android:layout_width="119dp"
+            android:layout_height="89dp"
             android:layout_gravity="center"
             android:layout_marginTop="160dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo_siaga_banjir" />
+            app:srcCompat="@drawable/logo_2_1" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
