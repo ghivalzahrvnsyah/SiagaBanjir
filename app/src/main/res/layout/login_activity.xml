@@ -125,5 +125,16 @@
             app:layout_constraintTop_toBottomOf="@+id/login"
             app:srcCompat="@drawable/clover_v2" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/imageView5"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

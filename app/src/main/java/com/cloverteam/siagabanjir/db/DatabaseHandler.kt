@@ -1,218 +1,212 @@
 package com.cloverteam.siagabanjir.db
 
-import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import com.cloverteam.siagabanjir.model.Report
 import com.cloverteam.siagabanjir.model.User
+import com.google.firebase.database.*
 
-class DatabaseHandler(context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
-    companion object {
-        private const val DATABASE_VERSION = 4
-        private const val DATABASE_NAME = "siagabanjir.db"
-        private const val TABLE_USERS = "users"
-        private const val TABLE_REPORT = "report"
-        private const val KEY_ID = "id"
-        private const val KEY_NAMA_LENGKAP = "username"
-        private const val KEY_NO_TLP = "nomor_telepon"
-        private const val KEY_ALAMAT = "alamat"
-        private const val KEY_PASSWORD = "password"
-        private const val KEY_EMAIL = "email"
-        private const val KEY_DESCRIPTION = "description"
-        private const val KEY_DATE = "date"
-        private const val KEY_AREA = "area"
-        private const val KEY_STATUS = "status"
-        private const val KEY_USER_EMAIL = "user_email"
-    }
-
-    override fun onCreate(db: SQLiteDatabase) {
-        val createUsersTable =
-            "CREATE TABLE $TABLE_USERS ($KEY_ID INTEGER PRIMARY KEY, $KEY_EMAIL TEXT, $KEY_NAMA_LENGKAP TEXT, $KEY_NO_TLP TEXT, $KEY_ALAMAT TEXT, $KEY_PASSWORD TEXT)"
-        db.execSQL(createUsersTable)
-
-        val createReportTable =
-            "CREATE TABLE $TABLE_REPORT ($KEY_ID INTEGER PRIMARY KEY, $KEY_DESCRIPTION TEXT, $KEY_DATE TEXT, $KEY_AREA TEXT, $KEY_STATUS INTEGER, $KEY_USER_EMAIL TEXT, FOREIGN KEY($KEY_USER_EMAIL) REFERENCES $TABLE_USERS($KEY_EMAIL))"
-        db.execSQL(createReportTable)
-    }
-
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_REPORT")
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
-        onCreate(db)
-    }
+class DatabaseHandler(context: Context) {
+    private val BASE_URL = "https://siaga-banjir-6b3e7-default-rtdb.asia-southeast1.firebasedatabase.app"
+    private val database: DatabaseReference = FirebaseDatabase.getInstance(BASE_URL).reference
 
     // User related operations
 
-    fun addUser(user: User): Long {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(KEY_EMAIL, user.email)
-        values.put(KEY_NAMA_LENGKAP, user.namaLengkap)
-        values.put(KEY_NO_TLP, user.noTelepon)
-        values.put(KEY_ALAMAT, user.alamat)
-        values.put(KEY_PASSWORD, user.password)
-        return db.insert(TABLE_USERS, null, values)
+    fun addUser(user: User, callback: (Boolean) -> Unit) {
+        val userId = database.child("users").push().key
+        user.id = userId ?: ""
+        database.child("users").child(user.id).setValue(user)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Pengiriman data berhasil
+                    callback(true)
+                } else {
+                    // Pengiriman data gagal
+                    callback(false)
+                }
+            }
     }
 
-    fun getUser(email: String): User? {
-        val db = this.readableDatabase
-        val query = "SELECT * FROM $TABLE_USERS WHERE $KEY_EMAIL = ?"
-        val cursor: Cursor = db.rawQuery(query, arrayOf(email))
-        return if (cursor.moveToFirst()) {
-            val id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-            val namaLengkap = cursor.getString(cursor.getColumnIndex(KEY_NAMA_LENGKAP))
-            val noTlp = cursor.getString(cursor.getColumnIndex(KEY_NO_TLP))
-            val alamat = cursor.getString(cursor.getColumnIndex(KEY_ALAMAT))
-            val password = cursor.getString(cursor.getColumnIndex(KEY_PASSWORD))
-            User(id, email, namaLengkap, noTlp, alamat, password)
+
+    fun getUser(userId: String, callback: (User?) -> Unit) {
+        val query = database.child("users").orderByChild("id").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var user: User? = null
+                for (childSnapshot in snapshot.children) {
+                    user = childSnapshot.getValue(User::class.java)
+                    break
+                }
+                callback(user)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(null)
+            }
+        })
+    }
+
+
+
+
+    fun deleteUser(user: User) {
+        val userId = user.id
+        if (userId.isNotEmpty()) {
+            database.child("users").child(userId).removeValue()
+        }
+    }
+
+    // Update user account details (email, full name, phone number, address)
+    fun updateUserAccount(user: User, callback: (Boolean) -> Unit) {
+        val userId = user.id
+        if (userId.isNotEmpty()) {
+            val updatedUser = HashMap<String, Any>()
+            updatedUser["email"] = user.email
+            updatedUser["namaLengkap"] = user.namaLengkap
+            updatedUser["noTelepon"] = user.noTelepon
+            updatedUser["alamat"] = user.alamat
+
+            database.child("users").child(userId).updateChildren(updatedUser)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Update berhasil
+                        callback(true)
+                    } else {
+                        // Update gagal
+                        callback(false)
+                    }
+                }
         } else {
-            null
+            // ID pengguna kosong
+            callback(false)
+        }
+    }
+    // Update user password
+    fun updatePassword(user: User, callback: (Boolean) -> Unit) {
+        val userId = user.id
+        if (userId.isNotEmpty()) {
+            val updatedUserPassword = HashMap<String, Any>()
+            updatedUserPassword["password"] = user.password
+
+            database.child("users").child(userId).updateChildren(updatedUserPassword)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Update berhasil
+                        callback(true)
+                    } else {
+                        // Update gagal
+                        callback(false)
+                    }
+                }
+        } else {
+            // ID pengguna kosong
+            callback(false)
         }
     }
 
-    fun updateUser(user: User): Int {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(KEY_NAMA_LENGKAP, user.namaLengkap)
-        values.put(KEY_NO_TLP, user.noTelepon)
-        values.put(KEY_ALAMAT, user.alamat)
 
-        return db.update(TABLE_USERS, values, "$KEY_EMAIL = ?", arrayOf(user.email))
-    }
 
-    fun updatePassword(email: String, newPassword: String): Int {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(KEY_PASSWORD, newPassword)
-        return db.update(TABLE_USERS, values, "$KEY_EMAIL = ?", arrayOf(email))
-    }
-
-    fun deleteUser(user: User): Int {
-        val db = this.writableDatabase
-        return db.delete(TABLE_USERS, "$KEY_EMAIL = ?", arrayOf(user.email))
-    }
-
-    fun getAllUsers(): List<User> {
+    fun getAllUsers(callback: (List<User>) -> Unit) {
         val userList = mutableListOf<User>()
-        val db = this.readableDatabase
-        val query = "SELECT * FROM $TABLE_USERS"
-        val cursor: Cursor = db.rawQuery(query, null)
+        database.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userSnapshot in snapshot.children) {
+                    val user = userSnapshot.getValue(User::class.java)
+                    user?.let { userList.add(it) }
+                }
+                callback(userList)
+            }
 
-        if (cursor.moveToFirst()) {
-            do {
-                val id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                val email = cursor.getString(cursor.getColumnIndex(KEY_EMAIL))
-                val namaLengkap = cursor.getString(cursor.getColumnIndex(KEY_NAMA_LENGKAP))
-                val noTlp = cursor.getString(cursor.getColumnIndex(KEY_NO_TLP))
-                val alamat = cursor.getString(cursor.getColumnIndex(KEY_ALAMAT))
-                val password = cursor.getString(cursor.getColumnIndex(KEY_PASSWORD))
-                val user = User(id, email, namaLengkap, noTlp, alamat, password)
-                userList.add(user)
-            } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        return userList
+            override fun onCancelled(error: DatabaseError) {
+                callback(emptyList())
+            }
+        })
     }
 
     // Report related operations
 
-    fun addReport(report: Report, userEmail: String): Long {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(KEY_DESCRIPTION, report.description)
-        values.put(KEY_DATE, report.date)
-        values.put(KEY_AREA, report.area)
-        values.put(KEY_STATUS, report.status)
-        values.put(KEY_USER_EMAIL, userEmail)
-        return db.insert(TABLE_REPORT, null, values)
-    }
-
-    fun getAllReports(): List<Report> {
-        val reportList = mutableListOf<Report>()
-        val db = this.readableDatabase
-        val query = "SELECT * FROM $TABLE_REPORT"
-        val cursor: Cursor = db.rawQuery(query, null)
-
-        if (cursor.moveToFirst()) {
-            do {
-                val id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                val description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION))
-                val date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
-                val area = cursor.getString(cursor.getColumnIndex(KEY_AREA))
-                val status = cursor.getInt(cursor.getColumnIndex(KEY_STATUS))
-                val userEmail = cursor.getString(cursor.getColumnIndex(KEY_USER_EMAIL))
-                val report = Report(id, description, date, area, status, userEmail)
-                reportList.add(report)
-            } while (cursor.moveToNext())
+    fun addReport(report: Report, userId: String, callback: (Boolean) -> Unit) {
+        val reportId = database.child("reports").push().key
+        report.id = reportId ?: ""
+        report.userId = userId
+        database.child("reports").child(report.id).setValue(report)
+            .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Pengiriman data berhasil
+                callback(true)
+            } else {
+                // Pengiriman data gagal
+                callback(false)
+            }
         }
-
-        cursor.close()
-        return reportList
     }
 
-    fun getReportsByUserEmail(userEmail: String): List<Report> {
+    fun getAllReports(callback: (List<Report>) -> Unit) {
         val reportList = mutableListOf<Report>()
-        val db = this.readableDatabase
-        val query = "SELECT * FROM $TABLE_REPORT WHERE $KEY_USER_EMAIL = ? ORDER BY $KEY_ID DESC"
-        val cursor: Cursor = db.rawQuery(query, arrayOf(userEmail))
+        database.child("reports").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (reportSnapshot in snapshot.children) {
+                    val report = reportSnapshot.getValue(Report::class.java)
+                    report?.let { reportList.add(it) }
+                }
+                callback(reportList)
+            }
 
-        if (cursor.moveToFirst()) {
-            do {
-                val id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                val description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION))
-                val date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
-                val area = cursor.getString(cursor.getColumnIndex(KEY_AREA))
-                val status = cursor.getInt(cursor.getColumnIndex(KEY_STATUS))
-                val report = Report(id, description, date, area, status, userEmail)
-                reportList.add(report)
-            } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        return reportList
+            override fun onCancelled(error: DatabaseError) {
+                callback(emptyList())
+            }
+        })
     }
 
-    fun getLatestReportsWithStatus3(): List<Report> {
+    fun getReportsByUserId(userId: String, callback: (List<Report>) -> Unit) {
         val reportList = mutableListOf<Report>()
-        val db = this.readableDatabase
-        val query = "SELECT * FROM $TABLE_REPORT WHERE $KEY_STATUS = 3 ORDER BY $KEY_ID DESC LIMIT 1"
-        val cursor: Cursor = db.rawQuery(query, null)
+        val query = database.child("reports").orderByChild("userId").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (reportSnapshot in snapshot.children) {
+                    val report = reportSnapshot.getValue(Report::class.java)
+                    report?.let { reportList.add(it) }
+                }
+                callback(reportList)
+            }
 
-        if (cursor.moveToFirst()) {
-            do {
-                val id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                val description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION))
-                val date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
-                val area = cursor.getString(cursor.getColumnIndex(KEY_AREA))
-                val status = cursor.getInt(cursor.getColumnIndex(KEY_STATUS))
-                val userEmail = cursor.getString(cursor.getColumnIndex(KEY_USER_EMAIL))
-                val report = Report(id, description, date, area, status, userEmail)
-                reportList.add(report)
-            } while (cursor.moveToNext())
+            override fun onCancelled(error: DatabaseError) {
+                callback(emptyList())
+            }
+        })
+    }
+
+    fun getLatestReportsWithStatus3(callback: (List<Report>) -> Unit) {
+        val reportList = mutableListOf<Report>()
+        val query = database.child("reports").orderByChild("status").equalTo(3.toDouble())
+            .limitToLast(1)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (reportSnapshot in snapshot.children) {
+                    val report = reportSnapshot.getValue(Report::class.java)
+                    report?.let { reportList.add(it) }
+                }
+                callback(reportList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(emptyList())
+            }
+        })
+    }
+
+    fun updateReport(report: Report): Boolean {
+        val reportId = report.id
+        if (reportId.isNotEmpty()) {
+            database.child("reports").child(reportId).setValue(report)
+            return true
         }
-
-        cursor.close()
-        return reportList
+        return false
     }
 
-    fun updateReport(report: Report): Int {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(KEY_DESCRIPTION, report.description)
-        values.put(KEY_DATE, report.date)
-        values.put(KEY_AREA, report.area)
-        values.put(KEY_STATUS, report.status)
-
-        return db.update(TABLE_REPORT, values, "$KEY_ID = ?", arrayOf(report.id.toString()))
-    }
-
-    fun deleteReport(report: Report): Int {
-        val db = this.writableDatabase
-        return db.delete(TABLE_REPORT, "$KEY_ID = ?", arrayOf(report.id.toString()))
+    fun deleteReport(report: Report) {
+        val reportId = report.id
+        if (reportId.isNotEmpty()) {
+            database.child("reports").child(reportId).removeValue()
+        }
     }
 }

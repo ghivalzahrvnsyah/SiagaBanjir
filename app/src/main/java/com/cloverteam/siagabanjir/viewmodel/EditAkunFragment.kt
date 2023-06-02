@@ -1,15 +1,17 @@
 package com.cloverteam.siagabanjir.viewmodel
 
 import android.os.Bundle
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.cloverteam.siagabanjir.databinding.FragmentEditAkunBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.cloverteam.siagabanjir.db.DatabaseHandler
 import com.cloverteam.siagabanjir.model.User
 import com.cloverteam.siagabanjir.session.SessionManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditAkunFragment : Fragment() {
     private var _binding: FragmentEditAkunBinding? = null
@@ -31,60 +33,119 @@ class EditAkunFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         dbHandler = DatabaseHandler(requireContext())
         sessionManager = SessionManager(requireContext())
-        val email = sessionManager.getEmail().toString() // Ganti dengan email user yang sesuai
-        this.user = dbHandler.getUser(email)!!
+        val email = sessionManager.getUserId().toString() // Ganti dengan email user yang sesuai
+        dbHandler.getUser(email) { user ->
+            user?.let {
+                // Update the UI with the user data
+                binding.editTextEmail.setText(it.email)
+                binding.editTextNamaLengkap.setText(it.namaLengkap)
+                binding.editTextNoTlp.setText(it.noTelepon)
+                binding.editTextAlamat.setText(it.alamat)
 
-        // Mengisi informasi terkini user ke dalam text field layout
-        binding.editTextEmail.setText(user.email)
-        binding.editTextNamaLengkap.setText(user.namaLengkap)
-        binding.editTextNoTlp.setText(user.noTelepon)
-        binding.editTextAlamat.setText(user.alamat)
-        binding.buttonUpdate.setOnClickListener {
-            updateUser()
-        }
-
-    }
-
-    private fun updateUser() {
-        val updateEmail = binding.editTextEmail.text.toString()
-        val updatedNamaLengkap = binding.editTextNamaLengkap.text.toString()
-        val updatedNoTlp = binding.editTextNoTlp.text.toString()
-        val updatedAlamat = binding.editTextAlamat.text.toString()
-
-
-        // Update atribut user
-        user.email = updateEmail
-        user.namaLengkap = updatedNamaLengkap
-        user.noTelepon = updatedNoTlp
-        user.alamat = updatedAlamat
-
-        // Update user dalam database
-        val rowsAffected = dbHandler.updateUser(user)
-
-        if (rowsAffected > 0) {
-            // Update berhasil
-            // Tambahkan tindakan yang diinginkan setelah update berhasil
-            val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Update Berhasil!")
-                .setMessage("Informasi akun anda berhasil diupdate")
-                .setPositiveButton("OK") { _, _ ->
-                    // Tambahkan pemanggilan recreate() di dalam tindakan positif tombol OK
-                    requireActivity().recreate()
+                // Set a click listener for the update button
+                binding.buttonUpdate.setOnClickListener { _ ->
+                    updateUserAccount(it)
                 }
-            dialogBuilder.show()
-        } else {
-            // Update gagal
-            // Tambahkan tindakan yang diinginkan jika update gagal
-            val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Update gagal!")
-                .setMessage("Informasi akun anda gagal diupdate")
-                .setPositiveButton("OK", null)
-            dialogBuilder.show()
+            }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun updateUserAccount(user: User) {
+        // Reset error messages
+        binding.editTextEmail.error = null
+        binding.editTextNamaLengkap.error = null
+        binding.editTextNoTlp.error = null
+        binding.editTextAlamat.error = null
+
+        // Get the input values
+        val email = binding.editTextEmail.text.toString().trim()
+        val namaLengkap = binding.editTextNamaLengkap.text.toString().trim()
+        val noTlp = binding.editTextNoTlp.text.toString().trim()
+        val alamat = binding.editTextAlamat.text.toString().trim()
+
+        // Validate input
+        var isValid = true
+
+        if (email.isEmpty()) {
+            binding.editTextEmail.error = "Email tidak boleh kosong"
+            isValid = false
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.editTextEmail.error = "Masukkan email yang valid"
+            isValid = false
+        }
+
+        if (namaLengkap.isEmpty()) {
+            binding.editTextNamaLengkap.error = "Masukkan nama lengap anda"
+            isValid = false
+        }
+        if (namaLengkap.matches(Regex(".*\\d.*"))) {
+            binding.editTextNamaLengkap.error = "Masukkan nama dengan format yang benar"
+            isValid = false
+        }
+        if(namaLengkap.matches(Regex(".*[^\\p{L}\\s].*"))){
+            binding.editTextNamaLengkap.error = "Masukkan nama dengan format yang benar"
+            isValid = false
+
+        }
+
+        if (noTlp.isEmpty()) {
+            binding.editTextNoTlp.error = "Masukkan nomor telepon"
+            isValid = false
+        }
+        if (!noTlp.matches(Regex("[0-9]+")) && noTlp.length < 10) {
+            binding.editTextNoTlp.error = "Format nomor telepon tidak valid"
+            isValid = false
+        }
+
+        if (alamat.isEmpty()) {
+            binding.editTextAlamat.error = "Alamat is required"
+            isValid = false
+        }
+
+        if (!isValid) {
+            return
+        }
+
+        val updatedUser = User(
+            user.id,
+            email,
+            namaLengkap,
+            noTlp,
+            alamat,
+            user.password // Assuming the password is not editable in this screen
+        )
+
+       updateAccountUser(updatedUser)
     }
+    private fun updateAccountUser(user: User) {
+        MaterialAlertDialogBuilder(requireContext()).setTitle("Perbaharui informasi akun ?")
+            .setMessage("Anda akan memperbaharui profile anda")
+            .setPositiveButton("OK") { _, _ ->
+                dbHandler.updateUserAccount(user) { success ->
+                    if (success) {
+                        // Update successful
+                        showSuccessDialog()
+                    } else {
+                        // Update failed
+                        showErrorDialog()
+                    }
+                }
+            }.setNegativeButton("No") { _, _ ->
+            }.show()
+    }
+    private fun showSuccessDialog() {
+        MaterialAlertDialogBuilder(requireContext()).setTitle("Update Password berhasil")
+            .setMessage("Password anda berhasil diperbaharui")
+            .setPositiveButton("OK") { _, _ ->
+                // Tambahkan pemanggilan recreate() di dalam tindakan positif tombol OK
+                requireActivity().recreate()
+            }.show()
+    }
+    private fun showErrorDialog() {
+        Toast.makeText(requireContext(), "Update password gagal", Toast.LENGTH_SHORT).show()
+    }
+
 }
+
+

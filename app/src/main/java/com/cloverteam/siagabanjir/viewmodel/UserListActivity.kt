@@ -10,21 +10,21 @@ import com.cloverteam.siagabanjir.db.DatabaseHandler
 
 class UserListActivity : AppCompatActivity() {
 
-    private lateinit var recyclerViewUsers: RecyclerView
-    private lateinit var userAdapter: UserAdapter
-    private lateinit var databaseHandler: DatabaseHandler
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_list)
-
-        recyclerViewUsers = findViewById(R.id.recyclerViewUsers)
-        recyclerViewUsers.layoutManager = LinearLayoutManager(this)
-
-        databaseHandler = DatabaseHandler(this)
-        val userList = databaseHandler.getAllUsers()
-
-        userAdapter = UserAdapter(userList)
-        recyclerViewUsers.adapter = userAdapter
-    }
+//    private lateinit var recyclerViewUsers: RecyclerView
+//    private lateinit var userAdapter: UserAdapter
+//    private lateinit var databaseHandler: DatabaseHandler
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_user_list)
+//
+//        recyclerViewUsers = findViewById(R.id.recyclerViewUsers)
+//        recyclerViewUsers.layoutManager = LinearLayoutManager(this)
+//
+//        databaseHandler = DatabaseHandler(this)
+//        val userList = databaseHandler.getAllUsers()
+//
+//        userAdapter = UserAdapter(userList)
+//        recyclerViewUsers.adapter = userAdapter
+//    }
 }

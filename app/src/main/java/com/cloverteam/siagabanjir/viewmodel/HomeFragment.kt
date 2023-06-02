@@ -13,31 +13,39 @@ import com.cloverteam.siagabanjir.session.SessionManager
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var databaseHandler: DatabaseHandler
     private lateinit var sessionManager: SessionManager
+    private lateinit var databaseHandler: DatabaseHandler
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        databaseHandler = DatabaseHandler(requireContext())
-        sessionManager = SessionManager(requireContext())
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userEmail = sessionManager.getEmail().toString()
-        val user = databaseHandler.getUser(userEmail)
+        sessionManager = SessionManager(requireContext())
+        databaseHandler = DatabaseHandler(requireContext())
 
-        if (user != null) {
-            binding.userName.text = user.namaLengkap
+        val session = sessionManager.getUserId().toString()
+        databaseHandler.getUser(session) { user ->
+            user?.let {
+                binding.userName.text = user.namaLengkap
+            }
+        }
+        databaseHandler.getLatestReportsWithStatus3 {
+                reportList ->
+            if (reportList != null) {
+                for(report in reportList){
+                    binding.statusBanjir.text = "Banjir sedang berlangsung di ${report.area}"
+                }
+            }
         }
 
+        // Tombol Lapor
         binding.btnLapor.setOnClickListener {
             val addReportFragment = AddReportFragment()
             val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
@@ -46,6 +54,7 @@ class HomeFragment : Fragment() {
             transaction.commit()
         }
 
+        // Menu Laporan Warga
         binding.menuLaporanWarga.setOnClickListener {
             val historyFragment = HistoryFragment()
             val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
@@ -53,6 +62,8 @@ class HomeFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+
+        // Menu Wilayah Banjir
         binding.menuWilayahBanjir.setOnClickListener {
             val wilayahFragment = AreaBanjirFragment()
             val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
@@ -60,13 +71,11 @@ class HomeFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
-        val latestReports = databaseHandler.getLatestReportsWithStatus3()
-        for (report in latestReports) {
-            binding.statusBanjir.text = "Banjir sedang berlangsung di ${report.area}"
-        }
 
+        // Mendapatkan data laporan terbaru dengan status 3 dari Firebase Realtime Database menggunakan DatabaseHandler
 
     }
 }
+
 
 

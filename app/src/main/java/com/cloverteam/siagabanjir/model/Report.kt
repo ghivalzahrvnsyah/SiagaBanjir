@@ -1,10 +1,10 @@
 package com.cloverteam.siagabanjir.model
 
 data class Report(
-    val id: Int,
-    val description: String,
-    val date: String,
-    val area: String,
-    val status: Int,
-    val userEmail: String
+    var id: String = "",
+    val description: String = "",
+    val date: String = "",
+    val area: String = "",
+    val status: Int? = null,
+    var userId: String = ""
 )

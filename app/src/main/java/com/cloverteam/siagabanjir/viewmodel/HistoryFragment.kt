@@ -29,9 +29,6 @@ class HistoryFragment : Fragment() {
 
         // Tetapkan LinearLayoutManager ke RecyclerView
         binding.rvHistory.layoutManager = LinearLayoutManager(requireContext())
-
-        return binding.root
-
         return binding.root
     }
 
@@ -42,10 +39,15 @@ class HistoryFragment : Fragment() {
         sessionManager = SessionManager(requireContext())
         databaseHandler = DatabaseHandler(requireContext())
 
-        val userEmail = sessionManager.getEmail().toString() // Ganti dengan email pengguna yang sesungguhnya
-        val reports = databaseHandler.getReportsByUserEmail(userEmail)
+        val userId = sessionManager.getUserId() // Ubah sesuai dengan cara Anda mendapatkan email pengguna
 
-        // Memperbarui adapter dengan data laporan
-        reportsAdapter.setReports(reports)
+
+        // Mengambil data laporan dari Firebase Realtime Database menggunakan DatabaseHandler
+        if (userId != null) {
+            databaseHandler.getReportsByUserId(userId) { reports ->
+                reportsAdapter.setReports(reports)
+            }
+        }
     }
+
 }
