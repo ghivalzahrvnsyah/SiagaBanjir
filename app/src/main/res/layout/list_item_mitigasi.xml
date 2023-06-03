@@ -21,17 +21,31 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/blue_bg2"
-        app:cardCornerRadius="10dp"
-     >
+        app:cardCornerRadius="10dp">
 
-
-        <TextView
-            android:id="@+id/mitigasiName"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="MITIGASI"
-            android:layout_margin="16dp"
-            android:textSize="14sp"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mitigasiId"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:background="@drawable/circle_background"/>
+
+            <TextView
+                android:id="@+id/mitigasiName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="MITIGASI"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

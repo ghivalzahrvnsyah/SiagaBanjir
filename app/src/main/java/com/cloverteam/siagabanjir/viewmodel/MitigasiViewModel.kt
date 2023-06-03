@@ -7,10 +7,12 @@ import com.cloverteam.siagabanjir.model.Mitigasi
 class MitigasiViewModel: ViewModel(){
 
     private val data = MutableLiveData<List<Mitigasi>>()
-
+    private var counter = 1
     init {
         data.value = initData()
+        counter = data.value?.size ?: 0
     }
+
 
     private fun initData(): List<Mitigasi>{
         return listOf(
@@ -32,6 +34,8 @@ class MitigasiViewModel: ViewModel(){
             Mitigasi("Membangun tempat pembuangan limbah industri"),
             Mitigasi("Membangun tempat pembuangan limbah rumah tangga"),
             Mitigasi("Membangun tempat pembuangan limbah pertanian"),
+            Mitigasi("Membangun tempat pembuangan limbah peternakan"),
+            Mitigasi("Membangun tempat pembuangan limbah perikanan"),
         )
     }
     fun getData(): MutableLiveData<List<Mitigasi>> = data
