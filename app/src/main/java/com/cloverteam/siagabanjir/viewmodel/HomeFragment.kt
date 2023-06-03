@@ -80,6 +80,13 @@ class HomeFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+        binding.menuMitigasi.setOnClickListener {
+            val mitigasiFragment = MitigasiFragment()
+            val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
+            transaction.replace(R.id.fragmentContainer, mitigasiFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
 
         // Mendapatkan data laporan terbaru dengan status 3 dari Firebase Realtime Database menggunakan DatabaseHandler
 
