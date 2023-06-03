@@ -9,5 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue_bg2">#259DED</color>
     <color name="blue_bg">#7DC7F8</color>
+    <color name="blue_bg3">#1674BC</color>
     <color name="button_lapor">#FA3C3C</color>
+
 </resources>

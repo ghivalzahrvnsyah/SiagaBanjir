@@ -7,7 +7,7 @@ import com.cloverteam.siagabanjir.R
 import com.cloverteam.siagabanjir.databinding.ListItemHistoryBinding
 import com.cloverteam.siagabanjir.model.Report
 
-class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
+class AllReportsAdapter : RecyclerView.Adapter<AllReportsAdapter.ViewHolder>() {
     private var reports: List<Report> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,18 +35,18 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
         fun bind(report: Report) {
             // Mengikat data laporan ke tampilan item di sini
             // Contoh:
-            binding.tvAction.text = "Deskripsi :  ${report.description} [ ${report.area} ]"
-            binding.tvDate.text = "Tanggal   :  " + report.date
+            binding.tvAction.text = report.description
+            binding.tvDate.text = report.date
             if (report.status == 2) {
                 binding.ivIcon.setImageResource(R.drawable.status_2)
-                binding.tvStatus.text = "Status      :  Telas dikonfirmasi"
+                binding.tvStatus.text = "Telas dikonfirmasi"
 
             } else if (report.status == 3) {
                 binding.ivIcon.setImageResource(R.drawable.status_3)
-                binding.tvStatus.text = "Status      :  Report valid"
+                binding.tvStatus.text = "Report valid"
             } else {
                 binding.ivIcon.setImageResource(R.drawable.status_1)
-                binding.tvStatus.text = "Status      :  Belum terkonfirmasi"
+                binding.tvStatus.text = "Belum terkonfirmasi"
             }
         }
     }

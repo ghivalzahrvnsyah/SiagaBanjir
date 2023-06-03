@@ -13,15 +13,13 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.cloverteam.siagabanjir.model.Report
 import com.cloverteam.siagabanjir.session.SessionManager
-import com.google.firebase.database.FirebaseDatabase
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddReportFragment : Fragment() {
     private lateinit var descriptionInputEditText: TextInputEditText
     private lateinit var areaSpinner: AutoCompleteTextView
-    private lateinit var selectImageButton: Button
-    private lateinit var imagePreview: ImageView
     private lateinit var addReportButton: MaterialButton
     private lateinit var database: DatabaseHandler
     private lateinit var sessionManager: SessionManager
@@ -69,70 +67,48 @@ class AddReportFragment : Fragment() {
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
 
+        val report = Report(
+            description = description,
+            date = currentDate,
+            area = area,
+            status = status,
+            userId = userId
+        )
+        //kirim Report
+        addReport(report, userId)
+    }
 
+    private fun addReport(report: Report, userId: String) {
+        MaterialAlertDialogBuilder(requireContext()).setTitle("Kirim informasi banjir ?")
+            .setMessage("Informasi laporan anda akan dicheck dan divalidasi. dilarang melaporkan informasi palsu")
+            .setPositiveButton("OK") { _, _ ->
+                database.addReport(report, userId) { isSuccess ->
+                    if (isSuccess) {
+                        // Pengiriman data berhasil
+                        showSuccessDialog()
+                    } else {
+                        // Pengiriman data gagal
+                       showErrorDialog()
+                    }
+                }
+            }.setNegativeButton("No") { _, _ ->
+            }.show()
+    }
 
-            val report = Report(
-                description = description,
-                date = currentDate,
-                area = area,
-                status = status,
-                userId = userId)
-        database.addReport(report, userId){
-            isSuccess ->
-            if (isSuccess) {
-                // Pengiriman data berhasil
-
-
-                // Pindah ke halaman Login
-                val intent = Intent(context, Login::class.java)
+    private fun showSuccessDialog() {
+        MaterialAlertDialogBuilder(requireContext()).setTitle("Berhasil menambahkan report")
+            .setMessage("Informasi laporan anda akan dicheck dan divalidasi")
+            .setPositiveButton("OK") { _, _ ->
+                // Tambahkan pemanggilan recreate() di dalam tindakan positif tombol OK
+                val intent = Intent(context, Home::class.java)
                 startActivity(intent)
-            } else {
-                // Pengiriman data gagal
-                val message = "Gagal mengirim data ke database"
-                showToast(message)
-            }
-        }
-
-
-//            database.reference.child("reports").child(reportId).setValue(report)
-//                .addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
-//                            .setTitle("Lapor banjir!")
-//                            .setMessage("Informasi laporan anda akan dicheck dan divalidasi. Dilarang melaporkan informasi palsu")
-//                            .setPositiveButton("OK") { _, _ ->
-//                                descriptionInputEditText.text?.clear()
-//                                areaSpinner.text?.clear()
-//                                val dialogBuilder2 = MaterialAlertDialogBuilder(requireContext())
-//                                    .setTitle("Report terkirim!")
-//                                    .setMessage("Informasi akan segera divalidasi")
-//                                    .setPositiveButton("OK") { _, _ ->
-//                                        val intent = Intent(context, Home::class.java)
-//                                        startActivity(intent)
-//                                    }
-//                                dialogBuilder2.show()
-//                            }
-//                            .setNegativeButton("No") { _, _ ->
-//                            }
-//                        dialogBuilder.show()
-//                    } else {
-//                        Toast.makeText(
-//                            requireContext(),
-//                            "Gagal menambahkan laporan",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                }
-//        } else {
-//            Toast.makeText(requireContext(), "Gagal menambahkan laporan", Toast.LENGTH_SHORT).show()
-//        }
-        }
-
-    private fun showToast(message: String) {
-        // Menampilkan toast dengan pesan
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }.show()
     }
+
+    private fun showErrorDialog() {
+        Toast.makeText(requireContext(), "Update password gagal", Toast.LENGTH_SHORT).show()
     }
+}
 
 
 //import android.content.Intent

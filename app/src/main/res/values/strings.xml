@@ -38,8 +38,8 @@
     <string name="ket2_lapor">Bantu kami laporkan informasi banjir wilayah RW. 10</string>
     <string name="Submit_report">Submit Laporan</string>
     <string name="greeting">Selamat datang</string>
-    <string name="dump_name">Lorem Ipsum</string>
-    <string name="income_banjir">Banjir sedang berlangsung di</string>
+    <string name="dump_name">Memuat data....</string>
+    <string name="income_banjir">Memuat data....</string>
     <string name="info_banjir">Informasi banjir saat ini</string>
     <string name="menu_lain">Menu lainya</string>
     <string name="report">laporkan banjir</string>

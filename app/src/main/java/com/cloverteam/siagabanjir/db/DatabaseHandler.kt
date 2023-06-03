@@ -2,6 +2,7 @@ package com.cloverteam.siagabanjir.db
 
 import android.content.Context
 import com.cloverteam.siagabanjir.model.Report
+import com.cloverteam.siagabanjir.model.SosNumber
 import com.cloverteam.siagabanjir.model.User
 import com.google.firebase.database.*
 
@@ -10,7 +11,6 @@ class DatabaseHandler(context: Context) {
     private val database: DatabaseReference = FirebaseDatabase.getInstance(BASE_URL).reference
 
     // User related operations
-
     fun addUser(user: User, callback: (Boolean) -> Unit) {
         val userId = database.child("users").push().key
         user.id = userId ?: ""
@@ -44,9 +44,6 @@ class DatabaseHandler(context: Context) {
             }
         })
     }
-
-
-
 
     fun deleteUser(user: User) {
         val userId = user.id
@@ -102,8 +99,6 @@ class DatabaseHandler(context: Context) {
             callback(false)
         }
     }
-
-
 
     fun getAllUsers(callback: (List<User>) -> Unit) {
         val userList = mutableListOf<User>()
@@ -166,6 +161,10 @@ class DatabaseHandler(context: Context) {
                     val report = reportSnapshot.getValue(Report::class.java)
                     report?.let { reportList.add(it) }
                 }
+
+                // Lakukan pengurutan data berdasarkan date secara descending
+                reportList.sortByDescending { it.date }
+
                 callback(reportList)
             }
 
@@ -209,4 +208,23 @@ class DatabaseHandler(context: Context) {
             database.child("reports").child(reportId).removeValue()
         }
     }
+
+    fun getSosNumber(callback: (List<SosNumber>) -> Unit) {
+        val sosNumberList = mutableListOf<SosNumber>()
+        database.child("sosnumbers").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (sosSnapshot in snapshot.children) {
+                    val sosNumber = sosSnapshot.getValue(SosNumber::class.java)
+                    sosNumber?.let { sosNumberList.add(it) }
+                }
+                callback(sosNumberList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle the error here if needed
+                callback(emptyList())
+            }
+        })
+    }
+
 }

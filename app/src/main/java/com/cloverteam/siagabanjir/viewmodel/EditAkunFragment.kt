@@ -16,7 +16,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class EditAkunFragment : Fragment() {
     private var _binding: FragmentEditAkunBinding? = null
     private val binding get() = _binding!!
-    private lateinit var user: User
     private lateinit var dbHandler: DatabaseHandler
     private lateinit var sessionManager: SessionManager
 
@@ -135,15 +134,15 @@ class EditAkunFragment : Fragment() {
             }.show()
     }
     private fun showSuccessDialog() {
-        MaterialAlertDialogBuilder(requireContext()).setTitle("Update Password berhasil")
-            .setMessage("Password anda berhasil diperbaharui")
+        MaterialAlertDialogBuilder(requireContext()).setTitle("Update berhasil")
+            .setMessage("Update berhasil erhasil diperbaharui")
             .setPositiveButton("OK") { _, _ ->
                 // Tambahkan pemanggilan recreate() di dalam tindakan positif tombol OK
                 requireActivity().recreate()
             }.show()
     }
     private fun showErrorDialog() {
-        Toast.makeText(requireContext(), "Update password gagal", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Update gagal", Toast.LENGTH_SHORT).show()
     }
 
 }

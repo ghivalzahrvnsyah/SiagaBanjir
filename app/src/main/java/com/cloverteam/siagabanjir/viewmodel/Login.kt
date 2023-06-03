@@ -39,7 +39,7 @@ class Login : AppCompatActivity() {
         if (message != null) {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "-", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show()
         }
 
         binding.login.setOnClickListener {
