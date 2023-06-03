@@ -23,8 +23,6 @@ class ContactFragmentList: Fragment() {
        ViewModelProvider(this)[ContactViewModel::class.java]
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
