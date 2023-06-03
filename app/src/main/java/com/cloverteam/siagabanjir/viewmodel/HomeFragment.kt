@@ -72,6 +72,14 @@ class HomeFragment : Fragment() {
             transaction.commit()
         }
 
+        binding.menuContact.setOnClickListener{
+            val contactFragment = ContactFragmentList()
+            val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
+            transaction.replace(R.id.fragmentContainer, contactFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
         // Mendapatkan data laporan terbaru dengan status 3 dari Firebase Realtime Database menggunakan DatabaseHandler
 
     }
