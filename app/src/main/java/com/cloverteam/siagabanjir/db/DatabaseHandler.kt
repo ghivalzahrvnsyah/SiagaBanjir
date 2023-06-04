@@ -29,7 +29,7 @@ class DatabaseHandler(context: Context) {
 
     fun getUser(userId: String, callback: (User?) -> Unit) {
         val query = database.child("users").orderByChild("id").equalTo(userId)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var user: User? = null
                 for (childSnapshot in snapshot.children) {
@@ -44,6 +44,7 @@ class DatabaseHandler(context: Context) {
             }
         })
     }
+
 
     fun deleteUser(user: User) {
         val userId = user.id
@@ -141,8 +142,16 @@ class DatabaseHandler(context: Context) {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (reportSnapshot in snapshot.children) {
                     val report = reportSnapshot.getValue(Report::class.java)
-                    report?.let { reportList.add(it) }
+                    report?.let {
+                        if (it.status == 3 || it.status == 4) {
+                            reportList.add(it)
+                        }
+                    }
                 }
+
+                // Sort the reportList based on the date in ascending order
+                reportList.sortBy { it.date }
+
                 callback(reportList)
             }
 
@@ -151,6 +160,8 @@ class DatabaseHandler(context: Context) {
             }
         })
     }
+
+
 
     fun getReportsByUserId(userId: String, callback: (List<Report>) -> Unit) {
         val reportList = mutableListOf<Report>()
@@ -178,8 +189,9 @@ class DatabaseHandler(context: Context) {
         val reportList = mutableListOf<Report>()
         val query = database.child("reports").orderByChild("status").equalTo(3.toDouble())
             .limitToLast(1)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                reportList.clear()
                 for (reportSnapshot in snapshot.children) {
                     val report = reportSnapshot.getValue(Report::class.java)
                     report?.let { reportList.add(it) }
@@ -192,6 +204,7 @@ class DatabaseHandler(context: Context) {
             }
         })
     }
+
 
     fun updateReport(report: Report): Boolean {
         val reportId = report.id

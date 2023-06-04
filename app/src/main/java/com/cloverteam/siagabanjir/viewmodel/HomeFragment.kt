@@ -1,5 +1,6 @@
 package com.cloverteam.siagabanjir.viewmodel
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,29 @@ import com.cloverteam.siagabanjir.R
 import com.cloverteam.siagabanjir.databinding.FragmentHomeBinding
 import com.cloverteam.siagabanjir.db.DatabaseHandler
 import com.cloverteam.siagabanjir.session.SessionManager
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var sessionManager: SessionManager
     private lateinit var databaseHandler: DatabaseHandler
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var reportListener: ValueEventListener
+
+    companion object {
+        private const val CHANNEL_ID = "siagabanjir_channel"
+        private const val NOTIFICATION_ID = 123
+        private const val PREF_LAST_REPORT_ID = "last_report_id"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,14 +55,20 @@ class HomeFragment : Fragment() {
                 binding.userName.text = user.namaLengkap
             }
         }
-        databaseHandler.getLatestReportsWithStatus3 {
-                reportList ->
-            if (reportList != null) {
-                for(report in reportList){
-                    binding.statusBanjir.text = "Banjir sedang berlangsung di ${report.area}"
-                }
+        databaseHandler.getLatestReportsWithStatus3 { reportList ->
+            if (reportList.isNotEmpty()) {
+                val latestReport = reportList.first() // Mendapatkan laporan terbaru
+                val message = "Banjir sedang berlangsung di ${latestReport.area}"
+                showNotification(requireContext(), message)
+
+                binding.statusBanjir.text = message
+                binding.indicator.setImageResource(R.drawable.circle_status_1)
+            } else {
+                binding.statusBanjir.text = "Hari yang cerah, tidak ada laporan banjir"
+                binding.indicator.setImageResource(R.drawable.circle_status_3)
             }
         }
+
 
         // Tombol Lapor
         binding.btnLapor.setOnClickListener {
@@ -56,9 +81,9 @@ class HomeFragment : Fragment() {
 
         // Menu Laporan Warga
         binding.menuLaporanWarga.setOnClickListener {
-            val historyFragment = HistoryFragment()
+            val Allhistory = AllHistoryFragment()
             val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.fragmentContainer, historyFragment)
+            transaction.replace(R.id.fragmentContainer, Allhistory)
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -90,6 +115,65 @@ class HomeFragment : Fragment() {
 
         // Mendapatkan data laporan terbaru dengan status 3 dari Firebase Realtime Database menggunakan DatabaseHandler
 
+    }
+
+    // Membuat metode untuk menampilkan notifikasi
+    private fun showNotification(context: Context, message: String) {
+        // Membuat kanal notifikasi (hanya perlu dilakukan sekali)
+        createNotificationChannel(context)
+
+        // Membuat notifikasi dengan menggunakan NotificationCompat.Builder
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.logo_2_1)
+            .setContentTitle("Status Banjir")
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+
+        // Menampilkan notifikasi
+        with(NotificationManagerCompat.from(context)) {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            }
+            notify(NOTIFICATION_ID, builder.build())
+        }
+    }
+
+    // Membuat kanal notifikasi (hanya perlu dilakukan sekali)
+    private fun createNotificationChannel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "Siaga Banjir",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Channel untuk notifikasi Siaga Banjir"
+            }
+
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+    private fun SessionManager.getLastReportId(): Int {
+        val preferences = requireContext().getSharedPreferences("siagabanjir_prefs", Context.MODE_PRIVATE)
+        return preferences.getInt(PREF_LAST_REPORT_ID, -1)
+    }
+
+    private fun SessionManager.setLastReportId(reportId: Int) {
+        val preferences = requireContext().getSharedPreferences("siagabanjir_prefs", Context.MODE_PRIVATE)
+        preferences.edit().putInt(PREF_LAST_REPORT_ID, reportId).apply()
     }
 }
 

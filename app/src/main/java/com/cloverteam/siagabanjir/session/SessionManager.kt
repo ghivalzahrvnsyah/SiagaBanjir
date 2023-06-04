@@ -15,6 +15,7 @@ class SessionManager(context: Context) {
         editor.apply()
     }
 
+
     fun isLoggedIn(): Boolean {
         return sharedPreferences.contains(userId)
     }

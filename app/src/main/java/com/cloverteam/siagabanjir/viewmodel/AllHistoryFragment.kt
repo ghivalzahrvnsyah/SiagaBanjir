@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cloverteam.siagabanjir.AllReportsAdapter
 import com.cloverteam.siagabanjir.databinding.FragmentAllHistoryBinding
 import com.cloverteam.siagabanjir.db.DatabaseHandler
 import com.cloverteam.siagabanjir.session.SessionManager
@@ -25,10 +26,10 @@ class AllHistoryFragment : Fragment() {
 
         // Inisialisasi adapter dan tetapkan ke RecyclerView
         reportsAdapter = AllReportsAdapter()
-        binding.rvHistory.adapter = reportsAdapter
+        binding.rvAllHistory.adapter = reportsAdapter
 
         // Tetapkan LinearLayoutManager ke RecyclerView
-        binding.rvHistory.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvAllHistory.layoutManager = LinearLayoutManager(requireContext())
         return binding.root
     }
 
@@ -44,7 +45,8 @@ class AllHistoryFragment : Fragment() {
 
         // Mengambil data laporan dari Firebase Realtime Database menggunakan DatabaseHandler
         if (userId != null) {
-            databaseHandler.getReportsByUserId(userId) { reports ->
+            databaseHandler.getAllReports { reports ->
+
                 reportsAdapter.setReports(reports)
             }
         }

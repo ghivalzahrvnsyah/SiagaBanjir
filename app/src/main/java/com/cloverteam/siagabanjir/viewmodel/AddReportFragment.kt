@@ -64,12 +64,12 @@ class AddReportFragment : Fragment() {
             return
         }
 
-        val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val currentDateTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
 
         val report = Report(
             description = description,
-            date = currentDate,
+            date = currentDateTime,
             area = area,
             status = status,
             userId = userId

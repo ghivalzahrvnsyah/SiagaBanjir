@@ -42,7 +42,7 @@
         app:srcCompat="@drawable/bg_2" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/indicator"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="12dp"
