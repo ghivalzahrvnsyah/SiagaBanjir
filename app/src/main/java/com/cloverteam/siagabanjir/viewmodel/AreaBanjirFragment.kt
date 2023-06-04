@@ -10,14 +10,13 @@ import com.cloverteam.siagabanjir.databinding.FragmentBanjirAreaBinding
 import com.cloverteam.siagabanjir.db.DatabaseHandler
 
 class AreaBanjirFragment : Fragment() {
-    private var _binding: FragmentBanjirAreaBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentBanjirAreaBinding
     private lateinit var databaseHandler: DatabaseHandler
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBanjirAreaBinding.inflate(inflater, container, false)
+        binding = FragmentBanjirAreaBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,10 +44,7 @@ class AreaBanjirFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }
 
 

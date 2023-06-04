@@ -9,14 +9,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.cloverteam.siagabanjir.databinding.RegisterActivityBinding
 import com.cloverteam.siagabanjir.db.DatabaseHandler
 import com.cloverteam.siagabanjir.model.User
+import com.cloverteam.siagabanjir.session.SessionManager
 
 class Registrasi : AppCompatActivity() {
     private lateinit var binding: RegisterActivityBinding
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = RegisterActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sessionManager = SessionManager(this)
+        if (sessionManager.isLoggedIn()) {
+            val intent = Intent(this, Home::class.java)
+            startActivity(intent)
+            finish() // Menutup Activity Login agar tidak dapat diakses lagi
+        }
 
         // Tombol Registrasi diklik
         binding.registrasi.setOnClickListener {
@@ -57,11 +65,12 @@ class Registrasi : AppCompatActivity() {
 
                     if (isSuccess) {
                         // Pengiriman data berhasil
-                        val message = "Registrasi Berhasil, Silahkan login"
-                        showToast(message)
+                        //val message = "Registrasi Berhasil, Silahkan login"
+                        //showToast(message)
 
                         // Pindah ke halaman Login
-                        val intent = Intent(this, Login::class.java)
+                        sessionManager.createLoginSession(user.id)
+                        val intent = Intent(this, Home::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -111,18 +120,39 @@ class Registrasi : AppCompatActivity() {
     }
 
     private fun isValidAlamat(alamat: String): Boolean {
-        // Validasi alamat tidak kosong
-        return alamat.isNotEmpty()
+        return if (alamat.isNotEmpty()) {
+            true
+        } else {
+            binding.alamatInput.error = "Harap masukkan alamat anda"
+            false
+        }
     }
 
     private fun isValidPhone(phone: String): Boolean {
-        // Validasi format nomor telepon menggunakan Regex
-        return phone.isNotEmpty() && phone.matches(Regex("[0-9]+")) && phone.length >= 10
+        return if (phone.isNotEmpty() && phone.matches(Regex("[0-9]+")) && phone.length >= 10) {
+            true
+        } else {
+            binding.noTelpInput.error = "Masukkan nomor telepon dengan format yang benar"
+            false
+        }
     }
 
     private fun isValidPassword(password: String, konfirmPassword: String): Boolean {
-        // Validasi password tidak kosong, minimal 6 karakter, dan sesuai dengan konfirmasi password
-        return password.isNotEmpty() && password.length >= 6 && password == konfirmPassword
+        return if (password.isNotEmpty() && password.length >= 6 && password == konfirmPassword) {
+            true
+        } else if (!password.isNotEmpty()) {
+            binding.passwordInput.error =
+                "Masukkan password dengan panjang minimal 6 karakter"
+            false
+        } else if (password.length < 6) {
+            binding.passwordInput.error =
+                "Password minimal 6 karakter"
+            false
+        } else {
+            binding.konfirmPasswordInput.error = "Konfirmasi password salah"
+            false
+        }
+
     }
 
     private fun showToast(message: String) {

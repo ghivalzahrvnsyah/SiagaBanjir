@@ -189,9 +189,8 @@ class DatabaseHandler(context: Context) {
         val reportList = mutableListOf<Report>()
         val query = database.child("reports").orderByChild("status").equalTo(3.toDouble())
             .limitToLast(1)
-        query.addValueEventListener(object : ValueEventListener {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                reportList.clear()
                 for (reportSnapshot in snapshot.children) {
                     val report = reportSnapshot.getValue(Report::class.java)
                     report?.let { reportList.add(it) }

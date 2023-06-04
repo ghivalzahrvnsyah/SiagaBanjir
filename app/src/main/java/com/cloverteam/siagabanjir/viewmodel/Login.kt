@@ -22,10 +22,7 @@ class Login : AppCompatActivity() {
         binding = LoginActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val progressBar = binding.progressBar
-
         sessionManager = SessionManager(this)
-
-
         database = FirebaseDatabase.getInstance(url).reference
 
         if (sessionManager.isLoggedIn()) {

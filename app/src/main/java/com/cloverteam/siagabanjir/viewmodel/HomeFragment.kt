@@ -59,8 +59,6 @@ class HomeFragment : Fragment() {
             if (reportList.isNotEmpty()) {
                 val latestReport = reportList.first() // Mendapatkan laporan terbaru
                 val message = "Banjir sedang berlangsung di ${latestReport.area}"
-                showNotification(requireContext(), message)
-
                 binding.statusBanjir.text = message
                 binding.indicator.setImageResource(R.drawable.circle_status_1)
             } else {
@@ -113,68 +111,10 @@ class HomeFragment : Fragment() {
             transaction.commit()
         }
 
-        // Mendapatkan data laporan terbaru dengan status 3 dari Firebase Realtime Database menggunakan DatabaseHandler
 
     }
 
-    // Membuat metode untuk menampilkan notifikasi
-    private fun showNotification(context: Context, message: String) {
-        // Membuat kanal notifikasi (hanya perlu dilakukan sekali)
-        createNotificationChannel(context)
 
-        // Membuat notifikasi dengan menggunakan NotificationCompat.Builder
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.logo_2_1)
-            .setContentTitle("Status Banjir")
-            .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
-
-        // Menampilkan notifikasi
-        with(NotificationManagerCompat.from(context)) {
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
-            notify(NOTIFICATION_ID, builder.build())
-        }
-    }
-
-    // Membuat kanal notifikasi (hanya perlu dilakukan sekali)
-    private fun createNotificationChannel(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Siaga Banjir",
-                NotificationManager.IMPORTANCE_DEFAULT
-            ).apply {
-                description = "Channel untuk notifikasi Siaga Banjir"
-            }
-
-            val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-    private fun SessionManager.getLastReportId(): Int {
-        val preferences = requireContext().getSharedPreferences("siagabanjir_prefs", Context.MODE_PRIVATE)
-        return preferences.getInt(PREF_LAST_REPORT_ID, -1)
-    }
-
-    private fun SessionManager.setLastReportId(reportId: Int) {
-        val preferences = requireContext().getSharedPreferences("siagabanjir_prefs", Context.MODE_PRIVATE)
-        preferences.edit().putInt(PREF_LAST_REPORT_ID, reportId).apply()
-    }
 }
 
 

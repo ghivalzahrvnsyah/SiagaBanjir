@@ -85,6 +85,8 @@ class AddReportFragment : Fragment() {
                 database.addReport(report, userId) { isSuccess ->
                     if (isSuccess) {
                         // Pengiriman data berhasil
+                        areaSpinner.text?.clear()
+                        descriptionInputEditText.text?.clear()
                         showSuccessDialog()
                     } else {
                         // Pengiriman data gagal
