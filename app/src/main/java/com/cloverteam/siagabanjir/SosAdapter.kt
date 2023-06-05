@@ -2,6 +2,7 @@ package com.cloverteam.siagabanjir
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.cloverteam.siagabanjir.databinding.ListSosBinding
 import com.cloverteam.siagabanjir.model.SosNumber
@@ -34,8 +35,24 @@ class SosAdapter : RecyclerView.Adapter<SosAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(sosNumber: SosNumber) {
-            binding.name.text = "${sosNumber.name} | ${sosNumber.status}"
             binding.phoneNumber.text =sosNumber.phone
+            if (sosNumber.type?.toInt() == 1){
+                val colorRes = R.color.button_lapor // Ganti dengan resource color yang diinginkan
+                val colorStateList = ContextCompat.getColorStateList(binding.bg.context, colorRes)
+                binding.bg.backgroundTintList = colorStateList
+                binding.name.text = "${sosNumber.name}"
+            }else if(sosNumber.type?.toInt() == 2){
+                val colorRes = R.color.blue_bg3 // Ganti dengan resource color yang diinginkan
+                val colorStateList = ContextCompat.getColorStateList(binding.bg.context, colorRes)
+                binding.bg.backgroundTintList = colorStateList
+                binding.name.text = "${sosNumber.name} | ${sosNumber.status}"
+            }
+            else{
+                val colorRes = R.color.green // Ganti dengan resource color yang diinginkan
+                val colorStateList = ContextCompat.getColorStateList(binding.bg.context, colorRes)
+                binding.bg.backgroundTintList = colorStateList
+                binding.name.text = "${sosNumber.name} | ${sosNumber.status}"
+            }
             // Mengikat data laporan ke tampilan item di sini
             // Contoh:
             // binding.tvAction.text = report.description

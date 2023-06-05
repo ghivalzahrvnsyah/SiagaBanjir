@@ -26,7 +26,6 @@ class DatabaseHandler(context: Context) {
             }
     }
 
-
     fun getUser(userId: String, callback: (User?) -> Unit) {
         val query = database.child("users").orderByChild("id").equalTo(userId)
         query.addValueEventListener(object : ValueEventListener {
@@ -44,7 +43,6 @@ class DatabaseHandler(context: Context) {
             }
         })
     }
-
 
     fun deleteUser(user: User) {
         val userId = user.id
@@ -78,6 +76,7 @@ class DatabaseHandler(context: Context) {
             callback(false)
         }
     }
+
     // Update user password
     fun updatePassword(user: User, callback: (Boolean) -> Unit) {
         val userId = user.id
@@ -126,14 +125,14 @@ class DatabaseHandler(context: Context) {
         report.userId = userId
         database.child("reports").child(report.id).setValue(report)
             .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Pengiriman data berhasil
-                callback(true)
-            } else {
-                // Pengiriman data gagal
-                callback(false)
+                if (task.isSuccessful) {
+                    // Pengiriman data berhasil
+                    callback(true)
+                } else {
+                    // Pengiriman data gagal
+                    callback(false)
+                }
             }
-        }
     }
 
     fun getAllReports(callback: (List<Report>) -> Unit) {
@@ -161,8 +160,6 @@ class DatabaseHandler(context: Context) {
         })
     }
 
-
-
     fun getReportsByUserId(userId: String, callback: (List<Report>) -> Unit) {
         val reportList = mutableListOf<Report>()
         val query = database.child("reports").orderByChild("userId").equalTo(userId)
@@ -175,7 +172,6 @@ class DatabaseHandler(context: Context) {
 
                 // Lakukan pengurutan data berdasarkan date secara descending
                 reportList.sortByDescending { it.date }
-
                 callback(reportList)
             }
 
@@ -187,8 +183,8 @@ class DatabaseHandler(context: Context) {
 
     fun getLatestReportsWithStatus3(callback: (List<Report>) -> Unit) {
         val reportList = mutableListOf<Report>()
-        val query = database.child("reports").orderByChild("status").equalTo(3.toDouble())
-            .limitToLast(1)
+        val query =
+            database.child("reports").orderByChild("status").equalTo(3.toDouble()).limitToLast(1)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (reportSnapshot in snapshot.children) {
@@ -202,8 +198,42 @@ class DatabaseHandler(context: Context) {
                 callback(emptyList())
             }
         })
+
+        // Tambahkan juga ValueEventListener agar data dapat diperbarui secara real-time saat ada perubahan
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                reportList.clear()
+                for (reportSnapshot in snapshot.children) {
+                    val report = reportSnapshot.getValue(Report::class.java)
+                    report?.let { reportList.add(it) }
+                }
+                callback(reportList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(emptyList())
+            }
+        })
     }
 
+//    fun getLatestReportsWithStatus3(callback: (List<Report>) -> Unit) {
+//        val reportList = mutableListOf<Report>()
+//        val query = database.child("reports").orderByChild("status").equalTo(3.toDouble())
+//            .limitToLast(1)
+//        query.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                for (reportSnapshot in snapshot.children) {
+//                    val report = reportSnapshot.getValue(Report::class.java)
+//                    report?.let { reportList.add(it) }
+//                }
+//                callback(reportList)
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                callback(emptyList())
+//            }
+//        })
+//    }
 
     fun updateReport(report: Report): Boolean {
         val reportId = report.id
@@ -220,23 +250,42 @@ class DatabaseHandler(context: Context) {
             database.child("reports").child(reportId).removeValue()
         }
     }
-
     fun getSosNumber(callback: (List<SosNumber>) -> Unit) {
         val sosNumberList = mutableListOf<SosNumber>()
-        database.child("sosnumbers").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (sosSnapshot in snapshot.children) {
-                    val sosNumber = sosSnapshot.getValue(SosNumber::class.java)
-                    sosNumber?.let { sosNumberList.add(it) }
+        database.child("sosnumbers").orderByChild("type")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (sosSnapshot in snapshot.children) {
+                        val sosNumber = sosSnapshot.getValue(SosNumber::class.java)
+                        sosNumber?.let { sosNumberList.add(it) }
+                    }
+                    callback(sosNumberList)
                 }
-                callback(sosNumberList)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Handle the error here if needed
-                callback(emptyList())
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle the error here if needed
+                    callback(emptyList())
+                }
+            })
     }
+
+
+//    fun getSosNumber(callback: (List<SosNumber>) -> Unit) {
+//        val sosNumberList = mutableListOf<SosNumber>()
+//        database.child("sosnumbers").addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                for (sosSnapshot in snapshot.children) {
+//                    val sosNumber = sosSnapshot.getValue(SosNumber::class.java)
+//                    sosNumber?.let { sosNumberList.add(it) }
+//                }
+//                callback(sosNumberList)
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // Handle the error here if needed
+//                callback(emptyList())
+//            }
+//        })
+//    }
 
 }

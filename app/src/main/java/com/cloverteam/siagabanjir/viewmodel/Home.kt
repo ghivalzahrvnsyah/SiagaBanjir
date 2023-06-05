@@ -40,8 +40,8 @@ class Home : AppCompatActivity() {
         val textViewNamaLengkap = headerView.findViewById<TextView>(R.id.namaLengkap)
         val textViewEmail = headerView.findViewById<TextView>(R.id.email)
 
-        val email = sessionManager.getUserId().toString() // Ganti dengan email user yang sesuai
-        databaseHandler.getUser(email) { user ->
+        val userId = sessionManager.getUserId().toString() // Ganti dengan email user yang sesuai
+        databaseHandler.getUser(userId) { user ->
             user?.let {
                 textViewNamaLengkap.text = user.namaLengkap
                 textViewEmail.text = user.email
@@ -106,12 +106,12 @@ class Home : AppCompatActivity() {
                     true
                 }
                 R.id.menu_logout -> {
-                    sessionManager.logout()
                     val dialogBuilder = MaterialAlertDialogBuilder(this)
                         .setTitle("Keluar aplikasi!")
                         .setMessage("Anda akan keluar aplikasi?")
                         .setPositiveButton("OK") { _, _ ->
                             // Tambahkan pemanggilan recreate() di dalam tindakan positif tombol OK
+                            sessionManager.logout()
                             recreate()
                             val message = "Anda telah keluar"
                             val intent = Intent(this, Login::class.java)

@@ -44,6 +44,9 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
             } else if (report.status == 3) {
                 binding.ivIcon.setImageResource(R.drawable.status_3)
                 binding.tvStatus.text = "Report valid"
+            } else if (report.status == 4) {
+                    binding.ivIcon.setImageResource(R.drawable.status_4)
+                    binding.tvStatus.text = "Report telah berakhir"
             } else {
                 binding.ivIcon.setImageResource(R.drawable.status_1)
                 binding.tvStatus.text = "Belum terkonfirmasi"

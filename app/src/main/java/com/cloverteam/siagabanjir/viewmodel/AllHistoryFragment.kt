@@ -42,14 +42,10 @@ class AllHistoryFragment : Fragment() {
 
         val userId = sessionManager.getUserId() // Ubah sesuai dengan cara Anda mendapatkan email pengguna
 
-
-        // Mengambil data laporan dari Firebase Realtime Database menggunakan DatabaseHandler
         if (userId != null) {
             databaseHandler.getAllReports { reports ->
-
                 reportsAdapter.setReports(reports)
             }
         }
     }
-
 }

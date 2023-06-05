@@ -1,4 +1,5 @@
 package com.cloverteam.siagabanjir.session
+
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -15,11 +16,9 @@ class SessionManager(context: Context) {
         editor.apply()
     }
 
-
     fun isLoggedIn(): Boolean {
         return sharedPreferences.contains(userId)
     }
-
 
     fun getUserId(): String? {
         return sharedPreferences.getString(userId, null)
