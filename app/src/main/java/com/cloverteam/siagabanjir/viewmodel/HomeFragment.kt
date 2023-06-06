@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
                 binding.statusBanjir.text = message
                 binding.indicator.setImageResource(R.drawable.circle_status_1)
             } else {
-                binding.statusBanjir.text = "Hari yang cerah, tidak ada laporan banjir"
+                binding.statusBanjir.text = "Tidak ada laporan banjir hari ini."
                 binding.indicator.setImageResource(R.drawable.circle_status_3)
             }
         }
