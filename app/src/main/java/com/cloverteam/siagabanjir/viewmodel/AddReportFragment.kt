@@ -19,7 +19,7 @@ import java.util.*
 
 class AddReportFragment : Fragment() {
     private lateinit var descriptionInputEditText: TextInputEditText
-    private lateinit var areaSpinner: AutoCompleteTextView
+    private lateinit var areaSpinner: Spinner
     private lateinit var addReportButton: MaterialButton
     private lateinit var database: DatabaseHandler
     private lateinit var sessionManager: SessionManager
@@ -54,7 +54,7 @@ class AddReportFragment : Fragment() {
 
     private fun addReport() {
         val description = descriptionInputEditText.text.toString()
-        val area = areaSpinner.text.toString()
+        val area = areaSpinner.selectedItem.toString()
         val status = 1
         val userId = sessionManager.getUserId().toString()
 
@@ -85,7 +85,7 @@ class AddReportFragment : Fragment() {
                 database.addReport(report, userId) { isSuccess ->
                     if (isSuccess) {
                         // Pengiriman data berhasil
-                        areaSpinner.text?.clear()
+                        areaSpinner.setSelection(0)
                         descriptionInputEditText.text?.clear()
                         showSuccessDialog()
                     } else {

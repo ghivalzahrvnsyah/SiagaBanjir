@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <!-- Set the desired background color -->
+            <corners android:radius="5dp" /> <!-- Set the desired corner radius -->
+        </shape>
+    </item>
+    <stroke
+        android:width="10dp"
+        android:color="#707070" />
+    <item android:drawable="@drawable/drop_down_arrow" />
+    <!-- Add the dropdown icon -->
+</layer-list>

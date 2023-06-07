@@ -32,14 +32,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionInputLayout">
+            app:layout_constraintTop_toBottomOf="@+id/descriptionInputLayout"
+           >
 
-            <AutoCompleteTextView
+            <Spinner
                 android:id="@+id/areaSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:gravity="center_vertical"
                 android:hint="Area"
-                android:paddingStart="15dp" />
+                android:paddingStart="15dp"
+                android:spinnerMode="dropdown" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -47,7 +51,7 @@
             android:id="@+id/addReportButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:text="@string/Submit_report"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -73,8 +77,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="@string/ket_report"
             android:justificationMode="inter_word"
+            android:text="@string/ket_report"
             android:textAlignment="textStart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,6 +94,16 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/areaInputLayout" />
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="373dp"
+            android:layout_height="63dp"
+            app:layout_constraintEnd_toEndOf="@+id/areaInputLayout"
+            app:layout_constraintStart_toStartOf="@+id/areaInputLayout"
+            app:layout_constraintTop_toTopOf="@+id/areaInputLayout"
+            app:srcCompat="@drawable/persegi" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
