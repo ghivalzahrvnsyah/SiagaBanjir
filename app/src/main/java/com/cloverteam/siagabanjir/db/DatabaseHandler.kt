@@ -7,24 +7,74 @@ import com.cloverteam.siagabanjir.model.User
 import com.google.firebase.database.*
 
 class DatabaseHandler(context: Context) {
-    private val BASE_URL = "https://siaga-banjir-6b3e7-default-rtdb.asia-southeast1.firebasedatabase.app"
+    private val BASE_URL =
+        "https://siaga-banjir-6b3e7-default-rtdb.asia-southeast1.firebasedatabase.app"
     private val database: DatabaseReference = FirebaseDatabase.getInstance(BASE_URL).reference
 
-    // User related operations
     fun addUser(user: User, callback: (Boolean) -> Unit) {
-        val userId = database.child("users").push().key
-        user.id = userId ?: ""
-        database.child("users").child(user.id).setValue(user)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Pengiriman data berhasil
-                    callback(true)
-                } else {
-                    // Pengiriman data gagal
+        // Check if the email already exists
+        val query = database.child("users").orderByChild("email").equalTo(user.email)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    // Email already exists, return false
                     callback(false)
+                } else {
+                    // Email doesn't exist, proceed with user registration
+                    val userId = database.child("users").push().key
+                    user.id = userId ?: ""
+                    database.child("users").child(user.id).setValue(user)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                // User registration successful
+                                callback(true)
+                            } else {
+                                // User registration failed
+                                callback(false)
+                            }
+                        }
                 }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(false)
+            }
+        })
     }
+
+    fun getUserByEmail(email: String, callback: (User?) -> Unit) {
+        val query: Query = database.child("users").orderByChild("email").equalTo(email)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var user: User? = null
+                for (snapshot in dataSnapshot.children) {
+                    user = snapshot.getValue(User::class.java)
+                    break // Assuming there's only one user with the given email
+                }
+                callback(user)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                callback(null)
+            }
+        })
+    }
+
+    // User related operations
+//    fun addUser(user: User, callback: (Boolean) -> Unit) {
+//        val userId = database.child("users").push().key
+//        user.id = userId ?: ""
+//        database.child("users").child(user.id).setValue(user)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    // Pengiriman data berhasil
+//                    callback(true)
+//                } else {
+//                    // Pengiriman data gagal
+//                    callback(false)
+//                }
+//            }
+//    }
 
     fun getUser(userId: String, callback: (User?) -> Unit) {
         val query = database.child("users").orderByChild("id").equalTo(userId)
@@ -250,6 +300,7 @@ class DatabaseHandler(context: Context) {
             database.child("reports").child(reportId).removeValue()
         }
     }
+
     fun getSosNumber(callback: (List<SosNumber>) -> Unit) {
         val sosNumberList = mutableListOf<SosNumber>()
         database.child("sosnumbers").orderByChild("type")

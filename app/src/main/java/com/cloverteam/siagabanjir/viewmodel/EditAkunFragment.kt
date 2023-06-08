@@ -32,14 +32,16 @@ class EditAkunFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         dbHandler = DatabaseHandler(requireContext())
         sessionManager = SessionManager(requireContext())
-        val email = sessionManager.getUserId().toString() // Ganti dengan email user yang sesuai
-        dbHandler.getUser(email) { user ->
+        var email = ""
+        val userId = sessionManager.getUserId().toString() // Ganti dengan email user yang sesuai
+        dbHandler.getUser(userId) { user ->
             user?.let {
                 // Update the UI with the user data
                 binding.editTextEmail.setText(it.email)
                 binding.editTextNamaLengkap.setText(it.namaLengkap)
                 binding.editTextNoTlp.setText(it.noTelepon)
                 binding.editTextAlamat.setText(it.alamat)
+                email = it.email
 
                 // Set a click listener for the update button
                 binding.buttonUpdate.setOnClickListener { _ ->
@@ -75,14 +77,14 @@ class EditAkunFragment : Fragment() {
         }
 
         if (namaLengkap.isEmpty()) {
-            binding.editTextNamaLengkap.error = "Masukkan nama lengap anda"
+            binding.editTextNamaLengkap.error = "Masukkan nama lengkap anda"
             isValid = false
         }
         if (namaLengkap.matches(Regex(".*\\d.*"))) {
             binding.editTextNamaLengkap.error = "Masukkan nama dengan format yang benar"
             isValid = false
         }
-        if(namaLengkap.matches(Regex(".*[^\\p{L}\\s].*"))){
+        if (namaLengkap.matches(Regex(".*[^\\p{L}\\s].*"))) {
             binding.editTextNamaLengkap.error = "Masukkan nama dengan format yang benar"
             isValid = false
 
@@ -115,8 +117,9 @@ class EditAkunFragment : Fragment() {
             user.password // Assuming the password is not editable in this screen
         )
 
-       updateAccountUser(updatedUser)
+        updateAccountUser(updatedUser)
     }
+
     private fun updateAccountUser(user: User) {
         MaterialAlertDialogBuilder(requireContext()).setTitle("Perbaharui informasi akun ?")
             .setMessage("Anda akan memperbaharui profile anda")
@@ -133,6 +136,7 @@ class EditAkunFragment : Fragment() {
             }.setNegativeButton("No") { _, _ ->
             }.show()
     }
+
     private fun showSuccessDialog() {
         MaterialAlertDialogBuilder(requireContext()).setTitle("Update berhasil")
             .setMessage("Update berhasil erhasil diperbaharui")
@@ -141,6 +145,7 @@ class EditAkunFragment : Fragment() {
                 requireActivity().recreate()
             }.show()
     }
+
     private fun showErrorDialog() {
         Toast.makeText(requireContext(), "Update gagal", Toast.LENGTH_SHORT).show()
     }
