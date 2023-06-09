@@ -66,7 +66,6 @@ class EditAkunFragment : Fragment() {
 
         // Validate input
         var isValid = true
-
         if (email.isEmpty()) {
             binding.editTextEmail.error = "Email tidak boleh kosong"
             isValid = false
@@ -108,16 +107,25 @@ class EditAkunFragment : Fragment() {
             return
         }
 
-        val updatedUser = User(
-            user.id,
-            email,
-            namaLengkap,
-            noTlp,
-            alamat,
-            user.password // Assuming the password is not editable in this screen
-        )
+        // Cek apakah email yang diupdate sama dengan email yang sudah terdaftar
+        dbHandler.getUserByEmail(email) { existingUser ->
+            if (existingUser != null && existingUser.id != user.id) {
+                // Email sudah terdaftar dengan pengguna lain, tampilkan pesan error
+                binding.editTextEmail.error = "Email sudah terdaftar"
+            } else {
+                // Email tersedia atau sama dengan email sebelumnya, lanjutkan pembaruan akun
+                val updatedUser = User(
+                    user.id,
+                    email,
+                    namaLengkap,
+                    noTlp,
+                    alamat,
+                    user.password
+                )
 
-        updateAccountUser(updatedUser)
+                updateAccountUser(updatedUser)
+            }
+        }
     }
 
     private fun updateAccountUser(user: User) {

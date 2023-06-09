@@ -1,6 +1,5 @@
 package com.cloverteam.siagabanjir.viewmodel
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +12,6 @@ import com.cloverteam.siagabanjir.db.DatabaseHandler
 import com.cloverteam.siagabanjir.session.SessionManager
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
