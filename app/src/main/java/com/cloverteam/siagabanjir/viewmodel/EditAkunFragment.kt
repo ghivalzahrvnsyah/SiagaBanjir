@@ -139,7 +139,7 @@ class EditAkunFragment : Fragment() {
 
     private fun showSuccessDialog() {
         MaterialAlertDialogBuilder(requireContext()).setTitle("Update berhasil")
-            .setMessage("Update berhasil erhasil diperbaharui")
+            .setMessage("Update berhasil berhasil diperbaharui")
             .setPositiveButton("OK") { _, _ ->
                 // Tambahkan pemanggilan recreate() di dalam tindakan positif tombol OK
                 requireActivity().recreate()
