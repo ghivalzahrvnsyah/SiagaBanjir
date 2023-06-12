@@ -9,8 +9,8 @@
         android:id="@+id/contact_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         android:background="@android:color/white"
+        android:padding="16dp"
         android:scrollbars="vertical"
         tools:listitem="@layout/list_item_contact" />
 

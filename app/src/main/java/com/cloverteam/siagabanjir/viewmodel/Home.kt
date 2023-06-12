@@ -93,6 +93,17 @@ class Home : AppCompatActivity() {
                     drawerLayout.closeDrawers()
                     true
                 }
+                R.id.about -> {
+                    MaterialAlertDialogBuilder(this).setTitle("SIAGA BANJIR")
+                        .setMessage("" +
+                                "Aplikasi Sistem Monitoring Peningkatan Debit Air dan Banjir Berbasis Mobile" +
+                                "\n[ Team Clover 2023 ]" +
+                                "\n\n\nSiagabanjir Versi 0.1.0")
+                        .setPositiveButton("OK") { _, _ ->
+
+                        }.show()
+                    true
+                }
                 R.id.menu_account_settings -> {
                     val fragment = EditAkunFragment()
                     replaceFragment(fragment)
