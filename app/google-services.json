@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "261821630468",
-    "project_id": "siaga-banjir-6b3e7",
-    "storage_bucket": "siaga-banjir-6b3e7.appspot.com"
+    "project_number": "213367954595",
+    "firebase_url": "https://siaga-banjir-49e4c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "siaga-banjir-49e4c",
+    "storage_bucket": "siaga-banjir-49e4c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:261821630468:android:8a00f8874f2f789a01cd51",
+        "mobilesdk_app_id": "1:213367954595:android:6f1dc19db8d677fe5e3316",
         "android_client_info": {
           "package_name": "com.cloverteam.siagabanjir"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB7e_gTVCfaeEHVbs_6I-MdoKI6gGpaI_I"
+          "current_key": "AIzaSyDR2_Bub2LSU2FITnXNg9Vw4CIoa3sITXE"
         }
       ],
       "services": {

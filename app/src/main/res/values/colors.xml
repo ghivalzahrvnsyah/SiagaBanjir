@@ -13,5 +13,7 @@
     <color name="button_lapor">#DF4646</color>
     <color name="grey">#E5E4E2</color>
     <color name="green">#39C17F</color>
+    <color name="orange">#FF9800</color>
+    <color name="abu">#EEECF4</color>
 
 </resources>

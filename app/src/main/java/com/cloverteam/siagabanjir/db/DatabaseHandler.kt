@@ -7,9 +7,8 @@ import com.cloverteam.siagabanjir.model.User
 import com.google.firebase.database.*
 
 class DatabaseHandler(context: Context) {
-    private val BASE_URL =
-        "https://siaga-banjir-6b3e7-default-rtdb.asia-southeast1.firebasedatabase.app"
-    private val database: DatabaseReference = FirebaseDatabase.getInstance(BASE_URL).reference
+
+    private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
     fun addUser(user: User, callback: (Boolean) -> Unit) {
         // Check if the email already exists
