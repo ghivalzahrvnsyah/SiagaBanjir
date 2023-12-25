@@ -50,7 +50,7 @@
         app:layout_constraintHorizontal_bias="0.769"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:srcCompat="@drawable/circle_status_1" />
+        app:srcCompat="@drawable/circle_status_4" />
 
     <TextView
         android:id="@+id/statusBanjir"

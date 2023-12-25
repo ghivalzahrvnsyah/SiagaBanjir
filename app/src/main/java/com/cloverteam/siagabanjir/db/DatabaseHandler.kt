@@ -1,6 +1,7 @@
 package com.cloverteam.siagabanjir.db
 
 import android.content.Context
+import com.cloverteam.siagabanjir.model.Banjir
 import com.cloverteam.siagabanjir.model.Report
 import com.cloverteam.siagabanjir.model.SosNumber
 import com.cloverteam.siagabanjir.model.User
@@ -9,6 +10,15 @@ import com.google.firebase.database.*
 class DatabaseHandler(context: Context) {
 
     private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+
+    private var banjirCallback: ((Banjir?) -> Unit)? = null
+
+    // Notification channel ID and name
+    private val channelId = "BanjirNotificationChannel"
+    private val channelName = "Banjir Notification Channel"
+
+    // Notification ID
+    private val notificationId = 1
 
     fun addUser(user: User, callback: (Boolean) -> Unit) {
         // Check if the email already exists
@@ -58,22 +68,6 @@ class DatabaseHandler(context: Context) {
             }
         })
     }
-
-    // User related operations
-//    fun addUser(user: User, callback: (Boolean) -> Unit) {
-//        val userId = database.child("users").push().key
-//        user.id = userId ?: ""
-//        database.child("users").child(user.id).setValue(user)
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    // Pengiriman data berhasil
-//                    callback(true)
-//                } else {
-//                    // Pengiriman data gagal
-//                    callback(false)
-//                }
-//            }
-//    }
 
     fun getUser(userId: String, callback: (User?) -> Unit) {
         val query = database.child("users").orderByChild("id").equalTo(userId)
@@ -265,25 +259,6 @@ class DatabaseHandler(context: Context) {
         })
     }
 
-//    fun getLatestReportsWithStatus3(callback: (List<Report>) -> Unit) {
-//        val reportList = mutableListOf<Report>()
-//        val query = database.child("reports").orderByChild("status").equalTo(3.toDouble())
-//            .limitToLast(1)
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                for (reportSnapshot in snapshot.children) {
-//                    val report = reportSnapshot.getValue(Report::class.java)
-//                    report?.let { reportList.add(it) }
-//                }
-//                callback(reportList)
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                callback(emptyList())
-//            }
-//        })
-//    }
-
     fun updateReport(report: Report): Boolean {
         val reportId = report.id
         if (reportId.isNotEmpty()) {
@@ -319,23 +294,21 @@ class DatabaseHandler(context: Context) {
             })
     }
 
+    fun getBanjirData(callback: (Banjir?) -> Unit) {
+        // Listen for changes to the "banjir" node in Firebase
+        database.child("banjir").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Retrieve Banjir data from the snapshot
+                val banjir = snapshot.getValue(Banjir::class.java)
+                // Invoke the callback with the updated Banjir data
+                callback(banjir)
+            }
 
-//    fun getSosNumber(callback: (List<SosNumber>) -> Unit) {
-//        val sosNumberList = mutableListOf<SosNumber>()
-//        database.child("sosnumbers").addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                for (sosSnapshot in snapshot.children) {
-//                    val sosNumber = sosSnapshot.getValue(SosNumber::class.java)
-//                    sosNumber?.let { sosNumberList.add(it) }
-//                }
-//                callback(sosNumberList)
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                // Handle the error here if needed
-//                callback(emptyList())
-//            }
-//        })
-//    }
+            override fun onCancelled(error: DatabaseError) {
+                // Handle the error here if needed
+                callback(null)
+            }
+        })
+    }
 
 }

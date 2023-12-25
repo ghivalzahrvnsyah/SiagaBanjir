@@ -46,17 +46,50 @@ class HomeFragment : Fragment() {
                 binding.userName.text = user.namaLengkap
             }
         }
-        databaseHandler.getLatestReportsWithStatus3 { reportList ->
-            if (reportList.isNotEmpty()) {
-                val latestReport = reportList.first() // Mendapatkan laporan terbaru
-                val message = "Banjir sedang berlangsung di ${latestReport.area}"
-                binding.statusBanjir.text = message
-                binding.indicator.setImageResource(R.drawable.circle_status_1)
+        // Uncomment the code to fetch Banjir data
+        databaseHandler.getBanjirData { banjirDataList ->
+            if (banjirDataList != null) {
+                // Handle the Banjir data as needed
+                //for (banjirData in banjirDataList) {
+                    // Process each BanjirData object
+                    val message = when (banjirDataList.statusCode) {
+                        0 -> "Tidak terjadi peninggkan debit air"
+                        1 -> "Debit air menaik"
+                        2 -> "Waspada!, Banjir wilayah RT05-RT02"
+                        3 -> "Siaga!, Banjir wilayah RT03-RT01"
+                        4 -> "Awas!, Banjir wilayah RT04-RT06"
+                        // Add more cases as needed
+                        else -> "Unknown Status: Your default message for unknown status"
+                    }
+                    when (banjirDataList.statusCode) {
+                        0 -> binding.indicator.setImageResource(R.drawable.circle_status_0)
+                        1 -> binding.indicator.setImageResource(R.drawable.circle_status_2)
+                        2 -> binding.indicator.setImageResource(R.drawable.circle_status_2)
+                        3 -> binding.indicator.setImageResource(R.drawable.circle_status_3)
+                        4 -> binding.indicator.setImageResource(R.drawable.circle_status_4)
+                        // Add more cases as needed
+                        else -> binding.indicator.setImageResource(R.drawable.circle_status_4)
+                    }
+                    binding.statusBanjir.text = message
+                //}
             } else {
-                binding.statusBanjir.text = "Tidak ada laporan banjir hari ini."
-                binding.indicator.setImageResource(R.drawable.circle_status_3)
+                // Handle case when there is no Banjir data
+
             }
         }
+
+
+//        databaseHandler.getLatestReportsWithStatus3 { reportList ->
+//            if (reportList.isNotEmpty()) {
+//                val latestReport = reportList.first() // Mendapatkan laporan terbaru
+//                val message = "Banjir sedang berlangsung di ${latestReport.area}"
+//                binding.statusBanjir.text = message
+//                binding.indicator.setImageResource(R.drawable.circle_status_1)
+//            } else {
+//                binding.statusBanjir.text = "Tidak ada laporan banjir hari ini."
+//                binding.indicator.setImageResource(R.drawable.circle_status_3)
+//            }
+//        }
 
 
         // Tombol Lapor
