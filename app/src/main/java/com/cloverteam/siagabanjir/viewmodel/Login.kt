@@ -15,7 +15,6 @@ class Login : AppCompatActivity() {
     private lateinit var binding: LoginActivityBinding
     private lateinit var sessionManager: SessionManager
     private lateinit var database: DatabaseReference
-    private val url = "https://siaga-banjir-6b3e7-default-rtdb.asia-southeast1.firebasedatabase.app"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +22,7 @@ class Login : AppCompatActivity() {
         setContentView(binding.root)
         val progressBar = binding.progressBar
         sessionManager = SessionManager(this)
-        database = FirebaseDatabase.getInstance(url).reference
+        database = FirebaseDatabase.getInstance().reference
 
         if (sessionManager.isLoggedIn()) {
             val intent = Intent(this, Home::class.java)
