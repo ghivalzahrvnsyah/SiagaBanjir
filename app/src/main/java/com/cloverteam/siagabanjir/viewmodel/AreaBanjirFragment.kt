@@ -26,26 +26,24 @@ class AreaBanjirFragment : Fragment() {
         databaseHandler = DatabaseHandler(requireContext())
 
         // Mengambil data laporan terakhir dengan status 3 dari Firebase
-        databaseHandler.getLatestReportsWithStatus3 { reports ->
-            if (reports.isNotEmpty()) {
-                val area = reports[0].area
-
-                // Set gambar banjir berdasarkan area laporan
-                when (area) {
-                    "RT-01", "RT-03" -> binding.imageBanjir.setImageResource(R.drawable.banjir_wilayah_2)
-                    "RT-02", "RT-05" -> binding.imageBanjir.setImageResource(R.drawable.banjir_wilayah_1)
-                    "RT-04", "RT-06" -> binding.imageBanjir.setImageResource(R.drawable.banjir_wilayah_3)
-                    else -> binding.imageBanjir.setImageResource(R.drawable.banjir_wilayah_error)
+        databaseHandler.getBanjirData { banjirDataList ->
+            if (banjirDataList != null) {
+                val statusCode = banjirDataList.statusCode
+                // Set gambar banjir berdasarkan statusCode
+                when (statusCode) {
+                    0 -> binding.imageBanjir.setImageResource(R.drawable.banjir_status_0)
+                    1 -> binding.imageBanjir.setImageResource(R.drawable.banjir_status_1)
+                    2 -> binding.imageBanjir.setImageResource(R.drawable.banjir_status_2)
+                    3 -> binding.imageBanjir.setImageResource(R.drawable.banjir_status_3)
+                    4 -> binding.imageBanjir.setImageResource(R.drawable.banjir_status_4)
                 }
             } else {
-                // No reports found with status 3
-                // Set a default image or handle it as per your requirement
+
             }
         }
     }
-
-
 }
+
 
 
 
