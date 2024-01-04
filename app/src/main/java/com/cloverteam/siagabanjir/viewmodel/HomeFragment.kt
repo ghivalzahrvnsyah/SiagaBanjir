@@ -1,9 +1,14 @@
 package com.cloverteam.siagabanjir.viewmodel
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.cloverteam.siagabanjir.R
@@ -20,6 +25,8 @@ class HomeFragment : Fragment() {
     private lateinit var databaseHandler: DatabaseHandler
     private lateinit var databaseReference: DatabaseReference
     private lateinit var reportListener: ValueEventListener
+    private lateinit var notificationManager: NotificationManager
+    private val channelId = "siagabanjir_channel"
     private var statusUser = ""
     private var engineStatus = false
     private var modeGetter = 0
@@ -43,6 +50,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sessionManager = SessionManager(requireContext())
         databaseHandler = DatabaseHandler(requireContext())
+        notificationManager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val session = sessionManager.getUserId().toString()
         databaseHandler.getUser(session) { user ->
@@ -240,6 +249,17 @@ class HomeFragment : Fragment() {
             }
         }
 
+        databaseHandler.getBanjirData { banjirDataList ->
+            if (banjirDataList != null) {
+                when (banjirDataList.statusCode) {
+                    1 -> showNotification("Waspada Banjir", "RT 2 & 5 berpotensi terdampak banjir")
+                    2 -> showNotification("Waspada Banjir", "RT 2 & 5 terdampak banjir & RT 1 & 3 berpotensi terdampak banjir")
+                    3 -> showNotification("Waspada Banjir", "RT 1, 2, 3, 5 terdampak & RT 4 & 6 berpotensi terdampak banjir")
+                    4 -> showNotification("Darurat Banjir", "Seluruh RW 10 terendam banjir")
+                }
+            }
+        }
+
         // }
 
 
@@ -300,6 +320,27 @@ class HomeFragment : Fragment() {
         }
 
 
+    }
+
+    private fun showNotification(title: String, message: String) {
+        val builder = NotificationCompat.Builder(requireContext(), channelId)
+            .setSmallIcon(R.drawable.logo_siaga_banjir)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "SiagaBanjir Channel",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+            builder.setChannelId(channelId)
+        }
+
+        notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
     // Contoh panggilan untuk menampilkan Snackbar
