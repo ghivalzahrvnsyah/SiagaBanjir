@@ -57,7 +57,7 @@ class Registrasi : AppCompatActivity() {
                             noTelepon = noTlp,
                             alamat = alamat,
                             password = password,
-                            status = "1"
+                            status = "0"
                         )
 
                         databaseHandler.addUser(newUser) { isSuccess ->
