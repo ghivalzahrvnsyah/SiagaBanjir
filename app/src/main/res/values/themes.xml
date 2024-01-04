@@ -16,6 +16,7 @@
         <item
             name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
         </item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
 
     </style>
 

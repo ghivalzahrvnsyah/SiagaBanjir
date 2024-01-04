@@ -40,7 +40,7 @@
     <string name="greeting">Selamat datang</string>
     <string name="dump_name">Memuat data....</string>
     <string name="income_banjir">Memuat data....</string>
-    <string name="info_banjir">Informasi banjir saat ini</string>
+    <string name="info_banjir">Informasi wilayah banjir saat ini</string>
     <string name="menu_lain">Menu lainya</string>
     <string name="report">laporkan banjir</string>
 

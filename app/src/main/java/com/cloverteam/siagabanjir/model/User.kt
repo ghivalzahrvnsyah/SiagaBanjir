@@ -6,5 +6,6 @@ data class User(
     var namaLengkap: String = "",
     var noTelepon: String = "",
     var alamat: String = "",
-    var password: String = ""
+    var password: String = "",
+    var status: String = ""
 )

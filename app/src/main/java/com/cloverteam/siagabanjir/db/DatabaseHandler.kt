@@ -311,4 +311,36 @@ class DatabaseHandler(context: Context) {
         })
     }
 
+    // Mengambil data relayMode dari Firebase
+    fun getRelayMode(callback: (Int?) -> Unit) {
+        // Listen for changes to the "relayMode" node in Firebase
+        database.child("relayMode").child("pumpMode").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Retrieve pumpMode data from the snapshot
+                val pumpMode = snapshot.getValue(Int::class.java)
+                // Invoke the callback with the updated pumpMode data
+                callback(pumpMode)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle the error here if needed
+                callback(null)
+            }
+        })
+    }
+
+    fun setRelayMode(pumpMode: Int, callback: (Boolean) -> Unit) {
+        // Set the "pumpMode" under "relayMode" node in Firebase
+        database.child("relayMode").child("pumpMode").setValue(pumpMode)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Update berhasil
+                    callback(true)
+                } else {
+                    // Update gagal
+                    callback(false)
+                }
+            }
+    }
+
 }

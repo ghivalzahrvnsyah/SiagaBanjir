@@ -10,6 +10,7 @@ import com.cloverteam.siagabanjir.R
 import com.cloverteam.siagabanjir.databinding.FragmentHomeBinding
 import com.cloverteam.siagabanjir.db.DatabaseHandler
 import com.cloverteam.siagabanjir.session.SessionManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 
@@ -19,6 +20,9 @@ class HomeFragment : Fragment() {
     private lateinit var databaseHandler: DatabaseHandler
     private lateinit var databaseReference: DatabaseReference
     private lateinit var reportListener: ValueEventListener
+    private var statusUser = ""
+    private var engineStatus = false
+    private var modeGetter = 0
 
     companion object {
         private const val CHANNEL_ID = "siagabanjir_channel"
@@ -44,39 +48,199 @@ class HomeFragment : Fragment() {
         databaseHandler.getUser(session) { user ->
             user?.let {
                 binding.userName.text = user.namaLengkap
+                if (user.status == "1") {
+                    binding.buttonPumpEngine.visibility = View.VISIBLE
+                    binding.engineStatus.visibility = View.VISIBLE
+                    binding.engineStatusTextView.visibility = View.VISIBLE
+                } else {
+                    binding.buttonPumpEngine.visibility = View.GONE
+                    binding.engineStatus.visibility = View.GONE
+                    binding.engineStatusTextView.visibility = View.GONE
+                }
             }
         }
+
         // Uncomment the code to fetch Banjir data
         databaseHandler.getBanjirData { banjirDataList ->
             if (banjirDataList != null) {
                 // Handle the Banjir data as needed
                 //for (banjirData in banjirDataList) {
-                    // Process each BanjirData object
-                    val message = when (banjirDataList.statusCode) {
-                        0 -> "Tidak terjadi peninggkan debit air"
-                        1 -> "Debit air menaik"
-                        2 -> "Waspada!, Banjir wilayah RT05-RT02"
-                        3 -> "Siaga!, Banjir wilayah RT03-RT01"
-                        4 -> "Awas!, Banjir wilayah RT04-RT06"
-                        // Add more cases as needed
-                        else -> "Unknown Status: Your default message for unknown status"
+                // Process each BanjirData object
+                val floatLevel = when (banjirDataList.statusCode) {
+                    0 -> "0 cm"
+                    1 -> "4 cm"
+                    2 -> "8 cm"
+                    3 -> "12 cm"
+                    4 -> "16 cm"
+                    // Add more cases as needed
+                    else -> "Unknown Status: Your default message for unknown status"
+                }
+
+                val activeFloatArea = when (banjirDataList.statusCode) {
+                    0 -> "Tidak ada"
+                    1 -> "Tidak ada"
+                    2 -> "RT05 - RT02"
+                    3 -> "RT03 - RT01"
+                    4 -> "RT06 - RT04"
+                    // Add more cases as needed
+                    else -> "Unknown Status: Your default message for unknown status"
+                }
+
+                val onGoingFloatArea = when (banjirDataList.statusCode) {
+                    0 -> "Tidak ada"
+                    1 -> "RT05 - RT02"
+                    2 -> "RT03 - RT01"
+                    3 -> "RT06 - RT04"
+                    4 -> "Semua Area RW 10"
+                    // Add more cases as needed
+                    else -> "Unknown Status: Your default message for unknown status"
+                }
+                val statusFloat = when (banjirDataList.statusCode) {
+                    0 -> "Normal"
+                    1 -> "Debit air meningkat"
+                    2 -> "Waspada!"
+                    3 -> "Siaga!"
+                    4 -> "Awas!"
+                    // Add more cases as needed
+                    else -> "Unknown Status: Your default message for unknown status"
+                }
+                when (banjirDataList.statusCode) {
+                    0 -> {
+                        binding.statusFloat.setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.ic_circle_normal,
+                            0
+                        )
+                        binding.engineStatus.text = "Non-aktif"
                     }
-                    when (banjirDataList.statusCode) {
-                        0 -> binding.indicator.setImageResource(R.drawable.circle_status_0)
-                        1 -> binding.indicator.setImageResource(R.drawable.circle_status_2)
-                        2 -> binding.indicator.setImageResource(R.drawable.circle_status_2)
-                        3 -> binding.indicator.setImageResource(R.drawable.circle_status_3)
-                        4 -> binding.indicator.setImageResource(R.drawable.circle_status_4)
-                        // Add more cases as needed
-                        else -> binding.indicator.setImageResource(R.drawable.circle_status_4)
+
+                    1 -> binding.statusFloat.setCompoundDrawablesWithIntrinsicBounds(
+                        0,
+                        0,
+                        R.drawable.ic_circle_normal,
+                        0
+                    )
+
+                    2 -> binding.statusFloat.setCompoundDrawablesWithIntrinsicBounds(
+                        0,
+                        0,
+                        R.drawable.ic_circle_warning,
+                        0
+                    )
+
+                    3 -> binding.statusFloat.setCompoundDrawablesWithIntrinsicBounds(
+                        0,
+                        0,
+                        R.drawable.ic_circle_alert,
+                        0
+                    )
+
+                    4 -> {
+                        binding.statusFloat.setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.ic_circle_danger,
+                            0
+                        )
+                        binding.engineStatus.text = "Aktif"
                     }
-                    binding.statusBanjir.text = message
+                    // Add more cases as needed
+                    else -> binding.statusFloat.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_circle_danger,
+                        0,
+                        0,
+                        0
+                    )
+                }
+                when (banjirDataList.statusCode) {
+                    0 -> engineStatus = false
+                    4 -> engineStatus = true
+                    // Add more cases as needed
+                    else -> "Unknown Status: Your default message for unknown status"
+                }
+
+//                if(engineStatus){
+//                    binding.engineStatus.text = "Aktif"
+//                }
+//                else{
+//                    binding.engineStatus.text = "Non-aktif"
+//                }
+
+                when (banjirDataList.statusCode) {
+                    0 -> binding.segmenTengah.setBackgroundResource(R.drawable.bg_gradient_blue)
+                    1 -> binding.segmenTengah.setBackgroundResource(R.drawable.bg_gradient_blue_green)
+                    2 -> binding.segmenTengah.setBackgroundResource(R.drawable.bg_gradient_yellow)
+                    3 -> binding.segmenTengah.setBackgroundResource(R.drawable.bg_gradient_orange)
+                    4 -> binding.segmenTengah.setBackgroundResource(R.drawable.bg_gradient_red)
+
+                    else -> binding.segmenTengah.setBackgroundColor(R.drawable.bg_gradient_blue)
+                }
+                binding.waterHeight.text = floatLevel
+                binding.activeFloat.text = activeFloatArea
+                binding.onGoingFloat.text = onGoingFloatArea
+                binding.statusFloat.text = statusFloat
+                //binding.statusBanjir.text = message
                 //}
             } else {
                 // Handle case when there is no Banjir data
 
             }
         }
+
+        binding.startEngineButton.setOnClickListener {
+            databaseHandler.getBanjirData { banjirDataList ->
+                if (banjirDataList != null) {
+                    if (banjirDataList.statusCode == 0) {
+                        binding.startEngineButton.setOnClickListener {
+                            binding.engineStatus.text = "Non-aktif"
+                            showSnackbar(binding.root, "Ditolak, Air dalam kondisi aman!!!")
+                        }
+                    } else {
+                        binding.startEngineButton.setOnClickListener {
+                            databaseHandler.setRelayMode(1) { success ->
+
+                                if (success) {
+                                    binding.engineStatus.text = "Aktif"
+                                    showSnackbar(binding.root, "Engine telah diaktifkan.")
+                                } else {
+                                    showSnackbar(binding.root, "Gagal mengaktifkan engine.")
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        //binding.stopEngineButton.setOnClickListener {
+
+        databaseHandler.getBanjirData { banjirDataList ->
+            if (banjirDataList != null) {
+                if (banjirDataList.statusCode == 4) {
+                    binding.stopEngineButton.setOnClickListener {
+                        binding.engineStatus.text = "Aktif"
+                        showSnackbar(binding.root, "Ditolak, Air dalam kondisi awas!!!")
+                    }
+                } else {
+                    binding.stopEngineButton.setOnClickListener {
+                        databaseHandler.setRelayMode(0) { success ->
+
+                            if (success) {
+                                binding.engineStatus.text = "Non-aktif"
+                                showSnackbar(binding.root, "Engine telah dinon-aktifkan.")
+                            } else {
+                                showSnackbar(binding.root, "Gagal menon-aktifkan engine.")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // }
 
 
 //        databaseHandler.getLatestReportsWithStatus3 { reportList ->
@@ -138,8 +302,16 @@ class HomeFragment : Fragment() {
 
     }
 
+    // Contoh panggilan untuk menampilkan Snackbar
+    fun showSnackbar(view: View, message: String) {
+        val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        snackbar.show()
+    }
+
 
 }
+
+
 
 
 
